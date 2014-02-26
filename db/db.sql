@@ -4,7 +4,7 @@
 -- Architecture             x86_64-linux-gnu-thread-multi             
 -- Target Database          mysql-innodb                              
 -- Input file               db.dia                                    
--- Generated at             Wed Feb 12 18:26:00 2014                  
+-- Generated at             Wed Feb 26 15:58:06 2014                  
 -- Typemap for mysql-innodb not found in input file                   
 
 -- get_constraints_drop 
@@ -52,7 +52,7 @@ drop table if exists friend_invite;
 
 -- get_schema_create
 create table user (
-   uid       long         not null,
+   uid       int          not null,
    name      varchar(30)          ,
    firstname varchar(30)          ,
    username  varchar(60)          ,
@@ -64,12 +64,12 @@ create table user (
    constraint pk_user primary key (uid)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table friendlist (
-   uid        long not null,
-   friend_uid long not null,
+   uid        int not null,
+   friend_uid int not null,
    constraint pk_friendlist primary key (uid,friend_uid)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table establishment (
-   id_establishment long        not null,
+   id_establishment int         not null,
    id_type          int                 ,
    name             varchar(60)         ,
    address0         varchar(60)         ,
@@ -81,8 +81,8 @@ create table establishment (
    constraint pk_establishment primary key (id_establishment)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table employees (
-   uid              long        not null,
-   id_establishment long        not null,
+   uid              int         not null,
+   id_establishment int         not null,
    rights           int         not null,
    label            varchar(60) not null,
    constraint pk_employees primary key (uid,id_establishment)
@@ -93,12 +93,12 @@ create table establishment_type (
    constraint pk_establishment_type primary key (id_type_establishment)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table event (
-   id_event         long         not null,
-   owner_uid        long         not null,
-   id_establishment long                 ,
+   id_event         int          not null,
+   owner_uid        int          not null,
+   id_establishment int                  ,
    latitude         double               ,
    longitude        double               ,
-   range            int                  ,
+   radius           int                  ,
    begins           datetime             ,
    ends             datetime             ,
    id_type          int                  ,
@@ -106,33 +106,33 @@ create table event (
    constraint pk_event primary key (id_event)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table event_participation (
-   id_participation long    not null,
-   id_event         long            ,
-   uid              long            ,
+   id_participation int     not null,
+   id_event         int             ,
+   uid              int             ,
    yesnomaybe       tinyint         ,
    confirmed        boolean         ,
    constraint pk_event_participation primary key (id_participation)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table user_stats (
-   id_stat_user long         not null,
-   uid          long         not null,
-   from_uid     long         not null,
+   id_stat_user int          not null,
+   uid          int          not null,
+   from_uid     int          not null,
    rating       tinyint      not null,
    comment      varchar(250) not null,
    constraint pk_user_stats primary key (id_stat_user)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table event_stats (
-   id_stat_event long         not null,
-   id_event      long                 ,
-   from_uid      long                 ,
+   id_stat_event int          not null,
+   id_event      int                  ,
+   from_uid      int                  ,
    rating        tinyint              ,
    comment       varchar(150)         ,
    constraint pk_event_stats primary key (id_stat_event)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table establishment_stats (
-   id_stat_establishment long         not null,
-   id_establishment      long                 ,
-   from_uid              long                 ,
+   id_stat_establishment int          not null,
+   id_establishment      int                  ,
+   from_uid              int                  ,
    rating                tinyint              ,
    comment               varchar(150)         ,
    constraint pk_establishment_stats primary key (id_stat_establishment)
@@ -143,34 +143,34 @@ create table event_type (
    constraint pk_event_type primary key (id_type_event)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table conversation (
-   id_conversation long    not null,
+   id_conversation int     not null,
    closed          boolean         ,
    constraint pk_conversation primary key (id_conversation)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table conversation_subscribe (
-   id_conversation long not null,
-   uid             long not null,
+   id_conversation int not null,
+   uid             int not null,
    constraint pk_conversation_subscribe primary key (id_conversation,uid)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table message (
-   id_message      long not null,
-   id_conversation long         ,
-   from_uid        long         ,
-   message         text         ,
+   id_message      int           not null,
+   id_conversation int                   ,
+   from_uid        int                   ,
+   message         varchar(4096)         ,
    constraint pk_message primary key (id_message)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table event_invite (
-   id_event_invite long    not null,
-   from_uid        long            ,
-   to_uid          long            ,
-   event_id        long            ,
+   id_event_invite int     not null,
+   from_uid        int             ,
+   to_uid          int             ,
+   event_id        int             ,
    seen            boolean         ,
    constraint pk_event_invite primary key (id_event_invite)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table friend_invite (
-   id_friend_invite long    not null,
-   from_uid         long            ,
-   to_uid           long            ,
+   id_friend_invite int     not null,
+   from_uid         int             ,
+   to_uid           int             ,
    seen             boolean         ,
    constraint pk_friend_invite primary key (id_friend_invite)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;

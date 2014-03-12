@@ -1,10 +1,10 @@
 -- Parse::SQL::Dia          version 0.27                              
 -- Documentation            http://search.cpan.org/dist/Parse-Dia-SQL/
--- Environment              Perl 5.018001, /usr/bin/perl              
+-- Environment              Perl 5.018002, /usr/bin/perl              
 -- Architecture             x86_64-linux-gnu-thread-multi             
 -- Target Database          mysql-innodb                              
 -- Input file               db.dia                                    
--- Generated at             Wed Feb 26 15:58:06 2014                  
+-- Generated at             Sat Mar  8 16:44:52 2014                  
 -- Typemap for mysql-innodb not found in input file                   
 
 -- get_constraints_drop 
@@ -25,6 +25,16 @@ alter table message drop foreign key message_fk_From_uid ;
 alter table message drop foreign key message_fk_Id_conversation ;
 alter table conversation_subscribe drop foreign key cnvrstn_sbscrb_fk_Id_cnvrstn ;
 alter table conversation_subscribe drop foreign key conversation_subscribe_fk_Uid ;
+alter table establishment_wall drop foreign key establishment_wall_fk_Op_uid ;
+alter table establishment_wall drop foreign key estblshmnt_wl_fk_Id_stblshmnt ;
+alter table establishment_following drop foreign key estblshmnt_flwng_fk_Ud_flwr ;
+alter table establishment_following drop foreign key LLjCb_BIakr2drfOJZn2Gw ;
+alter table event_wall drop foreign key event_wall_fk_Op_uid ;
+alter table event_wall drop foreign key event_wall_fk_Id_event ;
+alter table user_options drop foreign key user_options_fk_Uid ;
+alter table notifications drop foreign key notifications_fk_Uid ;
+alter table notifications drop foreign key notifications_fk_Id_type ;
+alter table event drop foreign key event_fk_Owner_uid ;
 
 -- get_permissions_drop 
 
@@ -47,20 +57,27 @@ drop table if exists conversation_subscribe;
 drop table if exists message;
 drop table if exists event_invite;
 drop table if exists friend_invite;
+drop table if exists establishment_wall;
+drop table if exists event_wall;
+drop table if exists establishment_following;
+drop table if exists notifications;
+drop table if exists notification_type;
+drop table if exists user_options;
 
 -- get_smallpackage_pre_sql 
 
 -- get_schema_create
 create table user (
-   uid       int          not null,
-   name      varchar(30)          ,
-   firstname varchar(30)          ,
-   username  varchar(60)          ,
-   passwd    varchar(256)         ,
-   sesstoken varchar(60)          ,
-   pushtoken varchar(60)          ,
-   latitude  double               ,
-   longitude double               ,
+   uid         int          not null,
+   name        varchar(30)          ,
+   firstname   varchar(30)          ,
+   username    varchar(60)          ,
+   mailaddress varchar(64)          ,
+   passwd      varchar(256)         ,
+   sesstoken   varchar(60)          ,
+   pushtoken   varchar(60)          ,
+   latitude    double               ,
+   longitude   double               ,
    constraint pk_user primary key (uid)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table friendlist (
@@ -94,6 +111,7 @@ create table establishment_type (
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 create table event (
    id_event         int          not null,
+   name             varchar(64)          ,
    owner_uid        int          not null,
    id_establishment int                  ,
    latitude         double               ,
@@ -174,6 +192,46 @@ create table friend_invite (
    seen             boolean         ,
    constraint pk_friend_invite primary key (id_friend_invite)
 )   ENGINE=InnoDB DEFAULT CHARSET=latin1;
+create table establishment_wall (
+   id_wall_post     int           not null,
+   id_establishment int           not null,
+   op_uid           int           not null,--  OP IS A FAG
+   message          varchar(4096) not null,
+   constraint pk_establishment_wall primary key (id_wall_post)
+)   ENGINE=InnoDB DEFAULT CHARSET=latin1;
+create table event_wall (
+   id_wall_post int           not null,
+   id_event     int           not null,
+   op_uid       int           not null,--  OP IS A FAG
+   message      varchar(4096) not null,
+   constraint pk_event_wall primary key (id_wall_post)
+)   ENGINE=InnoDB DEFAULT CHARSET=latin1;
+create table establishment_following (
+   id_subscription  int not null,
+   id_establishment int not null,
+   uid_follower     int not null,
+   constraint pk_establishment_following primary key (id_subscription)
+)   ENGINE=InnoDB DEFAULT CHARSET=latin1;
+create table notifications (
+   id_notif int           not null,
+   id_type  tinyint               ,
+   uid      int                   ,
+   message  varchar(4096)         ,
+   link     varchar(1024)         ,
+   constraint pk_notifications primary key (id_notif)
+)   ENGINE=InnoDB DEFAULT CHARSET=latin1;
+create table notification_type (
+   id_type tinyint      not null,
+   name    varchar(128)         ,
+   constraint pk_notification_type primary key (id_type)
+)   ENGINE=InnoDB DEFAULT CHARSET=latin1;
+create table user_options (
+   id_option    int          not null,
+   uid          int                  ,
+   option_name  varchar(128)         ,
+   option_value varchar(128)         ,
+   constraint pk_user_options primary key (id_option)
+)   ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- get_view_create
 
@@ -234,4 +292,34 @@ alter table conversation_subscribe add constraint cnvrstn_sbscrb_fk_Id_cnvrstn
     references conversation (id_conversation) ;
 alter table conversation_subscribe add constraint conversation_subscribe_fk_Uid 
     foreign key (uid)
+    references user (uid) ;
+alter table establishment_wall add constraint establishment_wall_fk_Op_uid 
+    foreign key (op_uid)
+    references user (uid) ;
+alter table establishment_wall add constraint estblshmnt_wl_fk_Id_stblshmnt 
+    foreign key (id_establishment)
+    references establishment (id_establishment) ;
+alter table establishment_following add constraint estblshmnt_flwng_fk_Ud_flwr 
+    foreign key (uid_follower)
+    references user (uid) ;
+alter table establishment_following add constraint LLjCb_BIakr2drfOJZn2Gw 
+    foreign key (id_establishment)
+    references establishment (id_establishment) ;
+alter table event_wall add constraint event_wall_fk_Op_uid 
+    foreign key (op_uid)
+    references user (uid) ;
+alter table event_wall add constraint event_wall_fk_Id_event 
+    foreign key (id_event)
+    references event (id_event) ;
+alter table user_options add constraint user_options_fk_Uid 
+    foreign key (uid)
+    references user (uid) ;
+alter table notifications add constraint notifications_fk_Uid 
+    foreign key (uid)
+    references user (uid) ;
+alter table notifications add constraint notifications_fk_Id_type 
+    foreign key (id_type)
+    references notification_type (id_type) ;
+alter table event add constraint event_fk_Owner_uid 
+    foreign key (owner_uid)
     references user (uid) ;

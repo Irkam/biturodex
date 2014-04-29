@@ -1,5 +1,9 @@
 <?php
+require_once(dirname(__FILE__) . "/db.class.php");
 
+/**
+ * 
+ */
 class Conversation{
 	public $id;
 	

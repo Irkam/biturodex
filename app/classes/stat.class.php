@@ -1,22 +1,26 @@
 <?php
+require_once(dirname(__FILE__) . "/db.class.php");
 
-public class StatEntry{
+/**
+ * 
+ */
+class StatEntry{
 	public $statEntryId;
 	public $statEmitterUID;
 	public $rating;
 	public $comment;
 }
 
-public class UserStatEntry extends StatEntry{
+class UserStatEntry extends StatEntry{
 	public $statTargetUID;
 }
 
-public class EstablishmentStatEntry extends StatEntry{
+class EstablishmentStatEntry extends StatEntry{
 	public $statTargetEst;
 
 }
 
-public class EventStatEntry extends StatEntry{
+class EventStatEntry extends StatEntry{
 	public $statTargetEvent;
 
 }

@@ -70,29 +70,19 @@ class Event{
 	function __construct(){}
 	
 	
-	public function addEvent($name, $own_uid, $id_establishment, $latitude, $longitude, $radius, $begins, $ends, $id_type, $address) {
-		/* $this->connection->beginTransaction(); */
-		
-		/*
-		$this->connection->exec("CREATE TABLE IF NOT EXISTS event(id_event integer primary key auto_increment, 
-																  name char(64), 
-																  owner_uid integer, 
-																  id_establishment integer, 
-																  latitude double, 
-																  longitude double, 
-																  radius int, 
-																  begins datetime, 
-																  ends datetime, 
-																  id_type integer, 
-																  address char(250), 
-																 )");
-		*/
-		
+	public function addEvent() {
 		/* ici, les fonctions de vérification de la validité du contenu des variables */
-		$query = $this->connection->prepare("INSERT INTO event(name, own_uid, id_establishment, latitude, longitude, radius, begins, ends, id_type, address) VALUES (?,?,?,?,?,?,?,?,?,?)");
+		$db = new db();
+		
+		$query = $db->prepare("INSERT INTO event(name, own_uid, id_establishment, latitude, longitude, radius, begins, ends, id_type, address) VALUES (?,?,?,?,?,?,?,?,?,?)");
 		if ($query===false) { $this->connection->rollback(); return false; }
-		$res = $query->execute(array($name, $own_uid, $id_establishment, $latitude, $longitude, $radius, $begins, $ends, $id_type, $address));
-		if ($res === false) { $this->connection->rollback(); return false; }
+		
+		try{
+			$query->execute(array($this->name, $this->own_uid, $this->id_establishment, $this->latitude, $this->longitude, $this->radius, $this->begins, $this->ends, $this->id_type, $this->address));
+			$this->id = $db->lastInsertId();
+		}catch(PDOException $e){
+			return json_decode(array("error", $e->getError()));
+		}
 	}
 	
 	

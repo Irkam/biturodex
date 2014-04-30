@@ -7,10 +7,10 @@ require_once(dirname(__FILE__) . "/db.class.php");
 class Event{
 	public $id;
 	public $name;
-	public $type;
-	public $op;
-	public $latitude, $longitude, $radius, $establishment, $address;
-	public $timestamp_start, $timestamp_end;
+	public $id_type;
+	public $own_uid;
+	public $latitude, $longitude, $radius, $id_establishment, $address;
+	public $begins, $ends;
 	
 	/**
 	 * Fetches an event by its id
@@ -29,15 +29,15 @@ class Event{
 			
 			$event->id = $res['id'];
 			$event->name = $res['name'];
-			$event->type = $res['id_type'];
-			$event->op = $res['op'];
-			$event->establishment = $res['id_establishment'];
+			$event->id_type = $res['id_type'];
+			$event->own_uid = $res['own_uid'];
+			$event->id_establishment = $res['id_establishment'];
 			$event->latitude = $res['latitude'];
 			$event->longitude = $res['longitude'];
 			$event->radius = $res['radius'];
 			$event->address = $res['address'];
-			$event->timestamp_start = $res['starts'];
-			$event->timestamp_end = $res['ends'];
+			$event->begins = $res['starts'];
+			$event->ends = $res['ends'];
 			
 			return $event;
 			
@@ -50,19 +50,19 @@ class Event{
 	/**
 	 * Creates an event from scratch
 	 */
-	public static function createEvent($name, $type, $op, $lat, $lng, $rad, $address=null, $estab=null, $starts, $ends){
+	public static function createEvent($name, $type, $own_uid, $lat, $lng, $rad, $address=null, $estab=null, $starts, $ends){
 		$event = new Event();
 		
 		$event->name = $name;
-		$event->type = $type;
-		$event->op = $op;
-		$event->establishment = $estab;
+		$event->id_type = $type;
+		$event->own_uid = $own_uid;
+		$event->id_establishment = $estab;
 		$event->latitude = $lat;
 		$event->longitude = $lng;
 		$event->radius = $rad;
 		$event->address = $address;
-		$event->timestamp_start = $starts;
-		$event->timestamp_end = $ends;
+		$event->begins = $starts;
+		$event->ends = $ends;
 		
 		return $event;
 	}
@@ -74,7 +74,8 @@ class Event{
 		/* ici, les fonctions de vérification de la validité du contenu des variables */
 		$db = new db();
 		
-		$query = $db->prepare("INSERT INTO event(name, own_uid, id_establishment, latitude, longitude, radius, begins, ends, id_type, address) VALUES (?,?,?,?,?,?,?,?,?,?)");
+		$query = $db->prepare("	INSERT INTO `event`(`name`, `owner_uid`, `id_establishment`, `latitude`, `longitude`, `radius`, `begins`, `ends`, `id_type`, `address`) 
+								VALUES (?,?,?,?,?,?,?,?,?,?)");
 		if ($query===false) { $this->connection->rollback(); return false; }
 		
 		try{
@@ -94,14 +95,14 @@ class Event{
 			array("id", $this->id),
 			array("name", $this->name),
 			array("type", $this->type),
-			array("op", $this->op),
-			array("establishment", $this->establishment),
+			array("own_uid", $this->own_uid),
+			array("id_establishment", $this->id_establishment),
 			array("lat", $this->latitude),
 			array("lng", $this->longitude),
 			array("rad", $this->radius),
 			array("address", $this->address),
-			array("starts", $this->timestamp_start),
-			array("ends", $this->timestamp_end),
+			array("starts", $this->begins),
+			array("ends", $this->ends),
 		));
 	}
 	

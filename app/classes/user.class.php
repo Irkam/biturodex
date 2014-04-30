@@ -30,23 +30,31 @@ class User{
 	 */
 	public static function getUserByUID($uid){
 		$db = new db();
-		$request = $db->prepare("SELECT user.uid, user.username, user.mailaddress, user.name, user.firstname WHERE uid = ?");
+		$request = $db->prepare("SELECT user.uid, user.username, user.mailaddress, user.name, user.firstname 
+		FROM user WHERE uid = ?");
 		
 		if ($request===false) return json_encode(array("error", "PDO error"));
-		if (!$request->execute(array($uid))) return json_encode(array("error", "PDO error"));
-		if($request->rowCount()==0)
-			return json_encode(array("error", "no such user"));
 		
-		$result = $request->fetch(PDO::FETCH_OBJ);
+		try{
+			$request->execute(array(intval($uid)));
+			
+			if($request->rowCount()==0)
+				return json_encode(array("error", "no such user"));
+			
+			$result = $request->fetch(PDO::FETCH_OBJ);
+			
+			$user = new User();
+			$user->uid = $uid;
+			$user->username = $result->username;
+			$user->email = $result->mailaddress;
+			$user->name = $result->name;
+			$user->firstname = $result->firstname;
+			
+			return $user;
 		
-		$user = new User();
-		$user->uid = $uid;
-		$user->username = $result->username;
-		$user->email = $result->mailaddress;
-		$user->name = $result->name;
-		$user->firstname = $result->firstname;
-		
-		return $user;
+		}catch(PDOException $e){
+			return json_encode(array("error", "PDO error"));
+		}
 	}
 	
 	
@@ -272,6 +280,8 @@ class User{
 		}
 		return true;
 	}
+	
+	public function getUID(){return $this->uid;}
 	
 	public function toJSON(){		
 		return json_encode(array(

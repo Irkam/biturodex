@@ -1,33 +1,59 @@
 <?php
 require_once(dirname(__FILE__) . "/db.class.php");
+require_once(dirname(__FILE__) . "/conversation.class.php");
 
 /**
  * 
  */
 class Message{
 	public $id;
-	public $conv_id;
-	public $content;
+	public $id_conversation;
+	public $from_uid;
+	public $message;
 	
-	function __construct($argument) {
+	function __construct() {
 		
+	}
+	
+	public static function createMessage($conv_id, $poster, $content){
+		$message = new Message();
+		
+		$message->id_conversation  = $conv_id;
+		$message->from_uid = $poster;
+		$message->message = $content;
+		
+		return $message;
+	}
+	
+	public static function getMessageById($id){
+		$db = new db();
+		
+		$query = $db->prepare("SELECT `id_message`, `id_conversation`, `from_uid`, `message` FROM `message` WHERE `id_message` = ?");
+		
+		try{
+			$query->execute(array($id));
+			
+			if($query->rowCount() != 1)
+				return null;
+			
+			$res = $query->fetch(PDO::FETCH_ASSOC);
+			$message = new Message();
+			$message->id  = $res['id_message'];
+			$message->id_conversation  = $res['id_conversation'];
+			$message->from_uid = $res['from_uid'];
+			$message->message = $res['message'];
+			
+			return $message;
+		}catch(PDOException $e){
+			echo json_encode(array("error", $e->getError()));
+			return null;
+		}
 	}
 	
 	/**
 	 * Envoie le message précédemment créé
 	 */	
-	public function addMessage($id_conversation, $from_uid, $message) {
-		/*
-		$this->connection->exec("CREATE TABLE IF NOT EXISTS message(id_message integer primary key auto_increment, 
-																	id_conversation integer, 
-																	from_uid integer, 
-																	message char(4096)
-																   )");
-		*/
-		$query = $this->connection->prepare("INSERT INTO message($id_conversation, $from_uid, $message) VALUES (?,?,?)");
-		if ($query===false) { $this->connection->rollback(); return false; }
-		$res = $query->execute(array($id_conversation, $from_uid, $message));
-		if ($res === false) { $this->connection->rollback(); return false; }
-		
+	public function addMessage() {
+		return Conversation::addMessage($this);		
 	}
 }

@@ -1,14 +1,27 @@
 <?php
 include_once(dirname(__FILE__) . "/header.inc.php");
 
-$pussy = Establishment::createEstablishment("Pussy Twisters", 0, "2 Rue Crudère", null, "Marseille", "13007", null, null);
-if(!is_null($pussy)){
-	echo $pussy->toJSON();
-	echo $pussy->addEstablishment();
-}
-?>
+$toast = User::getUserByUID(1);
+$pwet = User::getUserByUID(2);
 
-<p>Toast</p>
+echo "Toast : " . $toast->toJSON() . "<br />";
+echo "Pwet : " . $pwet->toJSON() . "<br />";
+
+/*
+$conv = Conversation::createConversation();
+$conv->addConversation();
+
+$conv->subscribeUsers(array($toast->getUID(), $pwet->getUID()));
+
+$conv->addMessage(Message::createMessage($conv->getId(), $toast->getUID(), "Toast"));
+$conv->addMessage(Message::createMessage($conv->getId(), $pwet->getUID(), "Pwet"));
+
+echo json_encode($conv->getMessages());
+*/
+ 
+Event::createEvent("soiréé YOLO", 1, $toast->getUID(), null, null, null, $address=null, 6, time(), time()+3600)->addEvent(); 
+
+?>
 
 <?php
 include_once(dirname(__FILE__ . "/footer.inc.php"));

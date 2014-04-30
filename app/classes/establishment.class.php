@@ -87,6 +87,25 @@ class Establishment{
 	}
 	
 	/**
+	Renvoie le nom de la catégorie d'établissement sous forme de string
+	*/
+	public static function getTypeNameStringById($type){
+		if(is_null($type))
+			return null;
+		
+		$db = new db();
+		$query = $db->prepare("SELECT `label_type` FROM `establishment_type` WHERE `id_type_establishment` = ?");
+		
+		try{
+			$query->execute(array($type));
+			$res = $query->fetch(PDO::FETCH_ASSOC);
+			return json_encode($res['id_type_establishment']);
+		}catch(PDOException $e){
+			return false;
+		}
+	}
+	
+	/**
 	Renvoie une liste d'employés attachés à l'établissement
 	*/
 	public function getEmployees(){

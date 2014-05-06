@@ -1,6 +1,6 @@
 <?
 
-require_once("model/Database.inc.php");
+require_once(dirname(__FILE__)."/../classes/db.class.php");
 
 abstract class Action {
 	private $view;
@@ -11,7 +11,7 @@ abstract class Action {
 	 */
 	public function __construct(){
 		$this->view = null;
-		$this->database = new Database();
+		$this->database = new db();
 	}
 
 	/**

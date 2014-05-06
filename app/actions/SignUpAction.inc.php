@@ -1,6 +1,8 @@
 <?
 
 require_once("actions/Action.inc.php");
+require_once(dirname(__FILE__)."/../classes/db.class.php");
+require_once(dirname(__FILE__)."/../classes/user.class.php");
 
 class SignUpAction extends Action {
 
@@ -28,19 +30,10 @@ class SignUpAction extends Action {
 		$firstname = $_POST['firstname'];
 		$mailaddress = $_POST['mailaddress'];
 		
-		if(! isset($username)) { $this->setSignUpFormView("erreur : pseudo non défini"); return ;}
-		if(! isset($password)) { $this->setSignUpFormView("erreur : mot de passe non défini"); return; }
-		if(! isset($passwordConfirmation)) { $this->setSignUpFormView("erreur : veuillez confirmer votre mot de passe"); return; }
-		if(! isset($mailaddress)) { $this->setSignUpFormView("erreur : e-mail non défini"); return ;}
+		$user = User::createUser($username, $mailaddress, $password, $name, $firstname);
+		$res = $user->addUser();
 		
-		if($password != $passwordConfirmation) {
-			$this->setSignUpFormView("erreur : le mot de passe et sa confirmation sont différents"); 
-			return;
-		}
-		
-		$res = $this->database->addUser($username, $password, $name, $firstname, $mailaddress);
-		
-		if ($res===true) {
+		if (!is_null($res)) {
 			$this->setSignUpFormView($res);
 			$this->setMessageView("inscription validée");
 		} else $this->setSignUpFormView($res);

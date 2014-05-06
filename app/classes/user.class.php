@@ -218,11 +218,14 @@ class User{
 		try{
 			$request->execute(array($this->name, $this->firstname, $this->username, $this->email, $this->encryptedpasswd));
 			$this->uid = $db->lastInsertId();
+			return $this;
 		}catch(PDOException $e){
-	  		return json_encode(array("error", "Couldn't add user : " . $e->getError()));
+	  		//return json_encode(array("error", "Couldn't add user : " . $e->getError()));
+	  		return null;
 	  	}
 	  	
-	  	return json_encode(array("error", $db->errorInfo()));
+	  	//return json_encode(array("error", $db->errorInfo()));
+	  	return null;
 	}
 
 	/**

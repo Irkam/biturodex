@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+		<meta charset="utf-8">
+		<title>Sondages</title>
+		<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+</head>
+
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<? $this->displaySearchForm(); ?>
+				<? 
+					if ($this->login===null) $this->displayLoginForm();
+					else $this->displayLogoutForm();
+				?>
+			</div>
+		</div>
+	</div>
+	
+	<!--<div>
+		<p>test</p>
+	</div>
+	
+	<div>
+		<p>test 2</p>
+	</div>
+	
+	<div>
+		<p>test</p>
+		<button onclick="">Changer de page</button>
+		<a href="/PHP_[2202]/sondages/views/templates/signupform.inc.php">test ?</a>
+		<a class="btn btn-danger" href="/PHP_[2202]/sondages/index.php?action=SignUpForm">Inscription0</a>
+		<a class="btn btn-danger" href="/PHP_[2202]/sondages/views/templates/signupform.inc.php">Inscription</a>
+	</div> -->
+	
+<? 
+	$this->displayBody(); 
+?>
+
+</body>
+</html>

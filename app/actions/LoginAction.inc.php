@@ -1,6 +1,8 @@
 <?
 
 require_once("actions/Action.inc.php");
+require_once(dirname(__FILE__)."/../classes/db.class.php");
+require_once(dirname(__FILE__)."/../classes/user.class.php");
 
 class LoginAction extends Action {
 
@@ -20,8 +22,9 @@ class LoginAction extends Action {
   		if(! isset($login)) $this->setMessageView("erreur : entrez votre pseudo");
 		if(! isset($password)) $this->setMessageView("erreur : entrez votre mot de passe");
   		
-  		$res = $this->database->checkPassword($login, $password);
-  		if($res == false) { $this->setView(getViewByName("Pseudo ou mot de passe incorrect")); return; }
+		$user = User::connectUser($login, $password);
+  		
+  		if(is_null($user)) { $this->setView(getViewByName("Pseudo ou mot de passe incorrect")); return; }
 		else {
 			$this->setMessageView("Connecté en tant que ".$login);
 			$this->setSessionLogin($login);

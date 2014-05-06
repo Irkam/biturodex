@@ -1,3 +1,5 @@
 *.dia~
+*~
 *.odt#
 *.stackdump
+config.inc.php

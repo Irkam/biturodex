@@ -19,7 +19,16 @@ $conv->addMessage(Message::createMessage($conv->getId(), $pwet->getUID(), "Pwet"
 echo json_encode($conv->getMessages());
 */
  
-Event::createEvent("soiréé YOLO", 1, $toast->getUID(), null, null, null, $address=null, 6, time(), time()+3600)->addEvent(); 
+//Event::createEvent("soiréé YOLO", 1, $toast->getUID(), null, null, null, $address=null, 6, time(), time()+3600)->addEvent();
+
+/*
+$ev = Event::getEventById(3);
+var_dump($ev);
+ * 
+ */
+
+$events = Event::getEventsByName("");
+var_dump($events);
 
 ?>
 

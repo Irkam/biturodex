@@ -22,28 +22,142 @@ class Event{
 		$stmt->bindParam('id', $id);
 		
 		try{
-			$stmt->execute(array($id));
-			
-			$res = $stmt->fetch(PDO::FETCH_ASSOC);
-			$event = new Event();
-			
-			$event->id = $res['id'];
-			$event->name = $res['name'];
-			$event->id_type = $res['id_type'];
-			$event->own_uid = $res['own_uid'];
-			$event->id_establishment = $res['id_establishment'];
-			$event->latitude = $res['latitude'];
-			$event->longitude = $res['longitude'];
-			$event->radius = $res['radius'];
-			$event->address = $res['address'];
-			$event->begins = $res['starts'];
-			$event->ends = $res['ends'];
-			
-			return $event;
+			$stmt->execute();			
+			if($stmt->rowCount() > 0){
+				$res = $stmt->fetch(PDO::FETCH_ASSOC);
+				$event = new Event();
+				
+				$event->id = $res['id_event'];
+				$event->name = $res['name'];
+				$event->id_type = $res['id_type'];
+				$event->own_uid = $res['owner_uid'];
+				$event->id_establishment = $res['id_establishment'];
+				$event->latitude = $res['latitude'];
+				$event->longitude = $res['longitude'];
+				$event->radius = $res['radius'];
+				$event->address = $res['address'];
+				$event->begins = $res['begins'];
+				$event->ends = $res['ends'];
+				
+				return $event;
+			}else{
+				return array(null);
+			}
 			
 		}catch(PDOException $e){
 			echo json_encode(array("error", $e->getMessage()));
 			return null;
+		}
+	}
+	
+	/**
+	 * Recherche des événements comprenant tout ou une partie du mot clé
+	 * 
+	 * Ne fonctionne pas encore correctement avec les accents. Peut-être à cause de l'encodage
+	 * de la bdd
+	 * 
+	 * @param keyword string ou array
+	 * @return array(Event)
+	 */
+	public static function getEventsByName($keyword, $limitbegin=0, $limitend=30){
+		$db = new db();
+		
+		if(is_array($keyword)){
+			$q = "SELECT * FROM `event` WHERE `name`";
+			
+			for($i = 0 ; $i < count($keyword) ; $i++){
+				if(strlen($keyword[$i]) == 0){
+					unset($keyword[$i]);
+					continue;
+				}
+				
+				$keyword[$i] = "%$keyword[$i]%";
+				$q .= " LIKE ?";
+				if($i != count($keyword) - 1){
+					$q .= " OR";
+				}
+			}
+			
+			//array_push($keyword, $limitbegin);
+			//array_push($keyword, $limitend);
+			$stmt = $db->prepare($q);
+			
+			if(count($keyword) == 0){
+				return array(null);
+			}
+			
+			try{
+				$stmt->execute($keyword);
+				
+				if($stmt->rowCount() > 0){
+					$response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					
+					$events = array();
+					foreach($response as $res){
+						$event = new Event();
+						
+						$event->id = $res['id_event'];
+						$event->name = $res['name'];
+						$event->id_type = $res['id_type'];
+						$event->own_uid = $res['owner_uid'];
+						$event->id_establishment = $res['id_establishment'];
+						$event->latitude = $res['latitude'];
+						$event->longitude = $res['longitude'];
+						$event->radius = $res['radius'];
+						$event->address = $res['address'];
+						$event->begins = $res['begins'];
+						$event->ends = $res['ends'];
+						
+						array_push($events, $event);
+					}
+					
+					return $events;
+				}else{
+					return array(null);
+				}
+			}catch(PDOException $e){
+				echo($e->getError());
+				return null;
+			}
+		}else{
+			$stmt = $db->prepare("SELECT * FROM `event` WHERE `name` LIKE ?");
+			
+			if(strlen($keyword) == 0)
+					return array(null);
+						
+			try{
+				$stmt->execute(array("%$keyword%"));
+				
+				if($stmt->rowCount() > 0){
+					$response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+					
+					$events = array();
+					foreach($response as $res){
+						$event = new Event();
+						
+						$event->id = $res['id_event'];
+						$event->name = $res['name'];
+						$event->id_type = $res['id_type'];
+						$event->own_uid = $res['owner_uid'];
+						$event->id_establishment = $res['id_establishment'];
+						$event->latitude = $res['latitude'];
+						$event->longitude = $res['longitude'];
+						$event->radius = $res['radius'];
+						$event->address = $res['address'];
+						$event->begins = $res['begins'];
+						$event->ends = $res['ends'];
+						
+						array_push($events, $event);
+					}
+					
+					return $events;
+				}else{
+					return array(null);
+				}
+			}catch(PDOException $e){
+				echo($e->getError());
+				return null;
+			}
 		}
 	}
 	
@@ -94,7 +208,7 @@ class Event{
 		return json_encode(array(
 			array("id", $this->id),
 			array("name", $this->name),
-			array("type", $this->type),
+			array("type", $this->id_type),
 			array("own_uid", $this->own_uid),
 			array("id_establishment", $this->id_establishment),
 			array("lat", $this->latitude),

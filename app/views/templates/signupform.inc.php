@@ -3,7 +3,7 @@
 		<h3>Inscription</h3>
 	</div>
 	<div class="form-horizontal modal-body">
-<?	if ($this->message!=="")
+<?php	if ($this->message!=="")
 			echo '<div class="alert "'.$this->style.'">'.$this->message.'</div>';
 ?>
 		<div class="control-group">

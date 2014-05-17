@@ -3,7 +3,7 @@
 function generateList($value) { 
 	?>
 	<option value="<?php echo $value; ?>"><?php echo $value; ?></option>
-<?
+<?php
 }
 
 function generateDate($beginsOrEnds) {
@@ -44,7 +44,7 @@ function generateDate($beginsOrEnds) {
 				generateList($i); 
 		?>
 		</select></label><br>
-<?
+<?php
 }
 
 function generateEventTypes() {
@@ -55,7 +55,7 @@ function generateEventTypes() {
 	<option value="rendez-vous">rencontre</option>
 	<option value="rendez-vous">rendez-vous</option>
 	</select></label><br>
-<?	
+<?php	
 }
 
 function generateInput($name, $placeHolder) {
@@ -66,7 +66,7 @@ function generateInput($name, $placeHolder) {
 			<input class="span3" type="text" name="<?php echo $name; ?>" placeholder="<?php echo $placeHolder; ?>">
 		</div>
 	</div>
-<?	
+<?php	
 }
 ?>
 
@@ -75,7 +75,7 @@ function generateInput($name, $placeHolder) {
 		<h3 style="text-align:center">Création d'un événement</h3>
 	</div>
 	<div class="form-horizontal modal-body">
-		<?	if ($this->message!=="")
+		<?php	if ($this->message!=="")
 			echo '<div class="alert '.$this->style.'">'.$this->message.'</div>';
 		?>
 		<div class="control-group">
@@ -86,7 +86,7 @@ function generateInput($name, $placeHolder) {
 		</div>
 		<br>
 		
-		<?
+		<?php
 			generateDate("begins");
 			generateDate("ends");
 		?>

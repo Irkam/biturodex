@@ -3,7 +3,7 @@
 	<div class="media-body">
 		<h4 class="media-heading"><?= $survey->getQuestion() ?></h4>
 		<br>
-	  <?
+	  <?php
 	  foreach ($survey->getResponses() as $response) { ?>
 	 	<div class="fluid-row">
 			<div class="span2"><?=$response->getTitle() ?></div>

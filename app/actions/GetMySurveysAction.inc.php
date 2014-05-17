@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once("actions/Action.inc.php");
 

@@ -1,4 +1,4 @@
-<?
+<?php
 require_once("views/View.inc.php");
 
 class SignUpFormView extends View {

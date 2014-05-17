@@ -1,4 +1,4 @@
-<?
+<?php
 
 require_once("model/Survey.inc.php");
 require_once("model/Response.inc.php");

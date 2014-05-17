@@ -1,4 +1,4 @@
-<?	
+<?php	
 require_once("views/View.inc.php");
 
 class UpdateUserFormView extends View {

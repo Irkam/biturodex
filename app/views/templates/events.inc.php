@@ -1,4 +1,5 @@
-
+<?php
+?>
 <li class="media well">
 	<div class="media-body">
 		<h4 class="media-heading">Événements de <?php $events->getOwner(); ?></h4>
@@ -13,5 +14,7 @@
 	  	</div>
 	</div>
 </li>
+<?php
+?>
 
 

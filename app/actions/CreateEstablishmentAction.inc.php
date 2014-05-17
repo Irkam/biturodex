@@ -2,18 +2,18 @@
 
 require_once("actions/Action.inc.php");
 
-class CreateEstablishmentAction extends Action {
+class CreateEventAction extends Action {
 
 	/**
-	 * Traite les données envoyées par le formulaire de création d'établissement.
+	 * Traite les données envoyées par le formulaire de création d'événement.
 	 *
 	 * Si l'utilisateur n'est pas connecté, un message lui demandant de se connecter est affiché.
 	 *
-	 * Sinon, la fonction ajoute l'établissement à la base de données.
+	 * Sinon, la fonction ajoute l'événement à la base de données.
 	 *
 	 * Après validation, l'un des messages suivants est affiché à l'utilisateur :
 	 * - "Le remplissage des champs marqués d'un * est obligatoire.";
-	 * - "Votre établissement a bien été créé.".
+	 * - "Votre événement a bien été créé.".
 	 * 
 	 * @see Action::run()
 	 */

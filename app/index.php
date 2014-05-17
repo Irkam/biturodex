@@ -24,6 +24,7 @@ function getAction() {
 			'Login',
 			'UpdateUserForm',
 			'UpdateUser',
+			'CreateEstablishment',
 			'CreateEventForm',
 			'CreateEvent',
 			'GetMySurveys',

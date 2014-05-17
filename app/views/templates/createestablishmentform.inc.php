@@ -1,10 +1,10 @@
 <?php function generateEstablishmentTypes() { ?>
-	<label id="label_sub" for=establishmentIdType">Type d'�tablissement<select>
+	<label id="label_sub" for=establishmentIdType">Type d établissement<select>
 	<option value="bar" selected>Bar</option>
 	<option value="cinema">Cin�ma</option>
 	<option value="nightclub">Bo�te de nuit</option>
 	<option value="outside">Lieu en ext�rieur</option>
-	</select></label><br> <?
+	</select></label><br> <?php
 } 
 
 function generateAddressInputs() { ?>
@@ -20,7 +20,7 @@ function generateAddressInputs() { ?>
 		<div class="controls">
 			<input class="span3" type="text" name="address2" placeholder="Si l'adresse est trop longue...">
 		</div>
-	</div> <?
+	</div> <?php
 }
 
 function generateCityAndPostcodeInputs() { ?>
@@ -36,34 +36,34 @@ function generateCityAndPostcodeInputs() { ?>
 		<div class="controls">
 			<input class="span3" type="text" name="postcode" placeholder="Code spostal">
 		</div>
-	</div> <?
+	</div> <?php
 }
 
 // input pour le titre/nom, l'input la plus importante !
 // il faut normalement s'assurer que $for $label et $name ne soient pas vides (ce n'est pas g�nant pour $placeHolder)
 function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 	<div class="control-group">
-			<label class="control-label" for="<? echo($for); ?>"><? echo($label); ?></label>
+			<label class="control-label" for="<?php echo($for); ?>"><?php echo($label); ?></label>
 			<div class="controls">
-				<input class="span3" type="text" name="<? echo($name); ?>" placeholder="<? echo($placeHolder); ?>">
+				<input class="span3" type="text" name="<?php echo($name); ?>" placeholder="<?php echo($placeHolder); ?>">
 			</div>
 		</div>
-		<br> <?
+		<br> <?php
 }
 ?>
 
 <form method="post" action="index.php?action=AddSurvey" class="modal">
 	<div class="modal-header">
-		<h3 style="text-align:center">Cr�ation d'un �tablissement</h3>
+		<h3 style="text-align:center">Création d'un établissement</h3>
 	</div>
 	<div class="form-horizontal modal-body">
-		<?	if ($this->message!=="")
+		<?php	if ($this->message!=="")
 			echo '<div class="alert '.$this->style.'">'.$this->message.'</div>';
 		?>
 		
-		generateFirstInput("establishmentName", "Nom de l'�tablissement", "establishmentName", "");
+		generateFirstInput("establishmentName", "Nom de l'établissement", "establishmentName", "placeholder bidon");
 		generateEstablishmentTypes();
 		generateAddressInputs();
 		generateCityAndPostcodeInputs();
-		<!-- latitude et longitude � g�rer -->
+		<!-- latitude et longitude à gérer -->
 </form>

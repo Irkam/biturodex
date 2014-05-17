@@ -1,39 +1,43 @@
-<?php
-include_once(dirname(__FILE__) . "/header.inc.php");
+<?
+session_start();
 
-$toast = User::getUserByUID(1);
-$pwet = User::getUserByUID(2);
+function getActionByName($name) {
+	$name .= 'Action';
+	require("actions/$name.inc.php");
+	return new $name();
+}
 
-echo "Toast : " . $toast->toJSON() . "<br />";
-echo "Pwet : " . $pwet->toJSON() . "<br />";
+function getViewByName($name) {
+	$name .= 'View';
+	require("views/$name.inc.php");
+	return new $name();
+}
 
-//$newuser = User::createUser("poulpe", "poulpe@ocean.com", "pouet", "poulpe", "poulpe");
-//$newuser->addUser();
+function getAction() {
+	if (!isset($_REQUEST['action'])) $action = 'Default';
+	else $action = $_REQUEST['action'];
 
-$newuser = User::connectUser("poulpe", User::encryptPassword("pouet"));
-var_dump($newuser);
+	$actions = array('Default',
+			'SignUpForm',
+			'SignUp',
+			'Logout',
+			'Login',
+			'UpdateUserForm',
+			'UpdateUser',
+			'CreateEventForm',
+			'CreateEvent',
+			'GetMySurveys',
+			'Search',
+			'Vote');
 
-/*
-$conv = Conversation::createConversation();
-$conv->addConversation();
+	if (!in_array($action, $actions)) $action = 'Default';
+	return getActionByName($action);
+}
 
-$conv->subscribeUsers(array($toast->getUID(), $pwet->getUID()));
-
-$conv->addMessage(Message::createMessage($conv->getId(), $toast->getUID(), "Toast"));
-$conv->addMessage(Message::createMessage($conv->getId(), $pwet->getUID(), "Pwet"));
-
-echo json_encode($conv->getMessages());
-*/
- 
-//Event::createEvent("soiréé YOLO", 1, $toast->getUID(), null, null, null, $address=null, 6, time(), time()+3600)->addEvent(); 
-
-$e = Establishment::getLastEstablishment();
-var_dump($e);
-$es = Establishment::getEstablishmentsByIdRanged(6, 30);
-var_dump($es);
-
+$action = getAction();
+$action->run();
+$view = $action->getView();
+$action->getView()->setLogin($action->getSessionLogin());
+$view->run();
 ?>
 
-<?php
-include_once(dirname(__FILE__ . "/footer.inc.php"));
-?>

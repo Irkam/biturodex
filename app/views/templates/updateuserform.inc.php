@@ -9,7 +9,7 @@
 		<div class="control-group">
 			<label class="control-label" for="signUpLogin">Pseudo</label>
 			<div class="controls">
-				<input  disabled type="text" name="signUpLogin" placeholder="Pseudo" value="<? echo $this->login; ?>">
+				<input  disabled type="text" name="signUpLogin" placeholder="Pseudo" value="<?php echo $this->login; ?>">
 			</div>
 		</div>
 		<div class="control-group">

@@ -1,5 +1,5 @@
-<?
-require_once("views/View.inc.php");
+<?php
+require_once(dirname(__FILE__) . "/View.inc.php");
 
 class DefaultView extends View {
 	

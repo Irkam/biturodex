@@ -1,16 +1,16 @@
-<?
+<?php
 session_start();
 
 function getActionByName($name) {
 	$name .= 'Action';
 	require("actions/$name.inc.php");
-	return new $name();
+	return $name;
 }
 
 function getViewByName($name) {
 	$name .= 'View';
 	require("views/$name.inc.php");
-	return new $name();
+	return $name;
 }
 
 function getAction() {

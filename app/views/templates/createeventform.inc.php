@@ -1,8 +1,8 @@
-<? 
+<?php 
 
 function generateList($value) { 
 	?>
-	<option value="<? echo $value; ?>"><? echo $value; ?></option>
+	<option value="<?php echo $value; ?>"><?php echo $value; ?></option>
 <?
 }
 
@@ -17,9 +17,9 @@ function generateDate($beginsOrEnds) {
 	
 	?>
 	<!-- génère le code pour le jour -->
-		<label id="label_sub" for="<? echo $day; ?>"> Jour<select>
+		<label id="label_sub" for="<?php echo $day; ?>"> Jour<select>
 		<option value="1" selected>1</option>
-		<? 
+		<?php 
 			for ($i = 1; $i <= 31; $i++)
 				generateList($i); 
 		?>
@@ -27,9 +27,9 @@ function generateDate($beginsOrEnds) {
 		
 		
 		<!-- génère le code pour le mois -->
-		<label id="label_sub" for="<? echo $month; ?>">Mois<select>
+		<label id="label_sub" for="<?php echo $month; ?>">Mois<select>
 		<option value="1" selected>1</option>
-		<? 
+		<?php 
 			for ($i = 1; $i <= 12; $i++)
 				generateList($i); 
 		?>
@@ -37,9 +37,9 @@ function generateDate($beginsOrEnds) {
 		
 		
 		<!-- génère le code pour l'année -->
-		<label id="label_sub" for="<? echo $day; ?>">Année<select>
+		<label id="label_sub" for="<?php echo $day; ?>">Année<select>
 		<option value="2014" selected>2014</option>
-		<? 
+		<?php 
 			for ($i = 2014; $i <= 2020; $i++)
 				generateList($i); 
 		?>
@@ -61,9 +61,9 @@ function generateEventTypes() {
 function generateInput($name, $placeHolder) {
 	?>
 	<div class="control-group">
-		<label class="control-label" for="questionSurvey"><? echo $name; ?></label>
+		<label class="control-label" for="questionSurvey"><?php echo $name; ?></label>
 		<div class="controls">
-			<input class="span3" type="text" name="<? echo $name; ?>" placeholder="<? echo $placeHolder; ?>">
+			<input class="span3" type="text" name="<?php echo $name; ?>" placeholder="<?php echo $placeHolder; ?>">
 		</div>
 	</div>
 <?	
@@ -105,7 +105,7 @@ function generateInput($name, $placeHolder) {
 			</div>
 		</div>
 		
-		<? generateEventTypes(); ?>
+		<?php generateEventTypes(); ?>
 
 		<div class="control-group">
 			<label class="control-label" for="questionSurvey">Adresse</label>

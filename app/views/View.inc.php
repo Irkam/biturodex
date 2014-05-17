@@ -1,5 +1,4 @@
-<?
-
+ <?php
 abstract class View {
 
 	protected $message = "";
@@ -68,3 +67,4 @@ abstract class View {
 	protected abstract function displayBody();
 
 }
+?>

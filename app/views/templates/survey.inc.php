@@ -11,12 +11,12 @@
 				<div class="bar" style="width: <?=$response->getPercentage() ?>%"></div>
 			</div>
 			<span class="span1">(<?=$response->getPercentage() ?>%)</span>
-			<form class="span1" method="post" action="<? echo $_SERVER['PHP_SELF'].'?action=Vote';?>">
+			<form class="span1" method="post" action="<?php echo $_SERVER['PHP_SELF'].'?action=Vote';?>">
 				<input type="hidden" name="responseId" value="<?=$response->getId() ?>"> 
 				<input type="submit" style="margin-left:5px" class="span1 btn btn-small btn-danger" value="Voter">
 			</form>
 		</div>
-		<? } 
+		<?php } 
 		?>
 		
 		<!--<div class="fluid-row">
@@ -25,7 +25,7 @@
 				<div class="bar" style="width: 20%"></div>
 			</div>
 			<span class="span1">(20%)</span>
-			<form class="span1" method="post" action="<? echo $_SERVER['PHP_SELF'].'?action=Vote';?>">
+			<form class="span1" method="post" action="<?php echo $_SERVER['PHP_SELF'].'?action=Vote';?>">
 				<input type="hidden" name="responseId" value="1"> 
 				<input type="submit" style="margin-left:5px" class="span1 btn btn-small btn-danger" value="Voter">
 			</form>
@@ -37,7 +37,7 @@
 				<div class="bar" style="width: 80%"></div>
 			</div>
 			<span class="span1">(80%)</span>
-			<form class="span1" method="post" action="<? echo $_SERVER['PHP_SELF'].'?action=Vote';?>">
+			<form class="span1" method="post" action="<?php echo $_SERVER['PHP_SELF'].'?action=Vote';?>">
 				<input type="hidden" name="responseId" value="2"> 
 				<input type="submit" style="margin-left:5px" class="span1 btn btn-small btn-danger" value="Voter">
 			</form>

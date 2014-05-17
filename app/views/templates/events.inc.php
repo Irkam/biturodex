@@ -1,13 +1,13 @@
 
 <li class="media well">
 	<div class="media-body">
-		<h4 class="media-heading">Événements de <? $events->getOwner(); ?></h4>
+		<h4 class="media-heading">Événements de <?php $events->getOwner(); ?></h4>
 		<br>
 	  	
 	  	<div>
 	  		<ul>
-	  			<? foreach($events as $event) {
-	  				echo("<li> <? echo($eventName); ?> </li>");
+	  			<?php foreach($events as $event) {
+	  				echo("<li> <?php echo($eventName); ?> </li>");
 	  			} ?>
 	  		</ul>
 	  	</div>

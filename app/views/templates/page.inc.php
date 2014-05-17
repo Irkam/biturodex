@@ -10,8 +10,8 @@
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
 			<div class="container">
-				<? $this->displaySearchForm(); ?>
-				<? 
+				<?php $this->displaySearchForm(); ?>
+				<?php 
 					if ($this->login===null) $this->displayLoginForm();
 					else $this->displayLogoutForm();
 				?>
@@ -19,7 +19,7 @@
 		</div>
 	</div>
 	
-<? 
+<?php 
 	$this->displayBody(); 
 ?>
 

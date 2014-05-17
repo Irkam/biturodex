@@ -50,6 +50,82 @@ class Event{
 		}
 	}
 	
+	public static function getLastEvent(){
+		$db = new db();
+		$query = $db->prepare("SELECT * FROM `event` ORDER BY `id_event` DESC LIMIT 1");
+		
+		try{
+			$query->execute();		
+			if($query->rowCount() > 0){
+				$res = $query->fetch(PDO::FETCH_ASSOC);
+				$event = new Event();
+				
+				$event->id = $res['id_event'];
+				$event->name = $res['name'];
+				$event->id_type = $res['id_type'];
+				$event->own_uid = $res['owner_uid'];
+				$event->id_establishment = $res['id_establishment'];
+				$event->latitude = $res['latitude'];
+				$event->longitude = $res['longitude'];
+				$event->radius = $res['radius'];
+				$event->address = $res['address'];
+				$event->begins = $res['begins'];
+				$event->ends = $res['ends'];
+				
+				return $event;
+			}else{
+				return array(null);
+			}
+		}catch(PDOException $e){
+			echo json_encode(array("error", $e->getMessage()));
+			return null;
+		}
+	}
+	
+	public static function getEventsByIdRanged($firstId, $rangesize=30){
+		if($rangesize <= 1)
+			return array(Event::getLastEvent());
+		
+		$db = new db();
+		$stmt = $db->prepare("SELECT * FROM `event` WHERE `id_event` <= :id ORDER BY `id_event` DESC LIMIT 0, :range");
+		$stmt->bindParam(":id", $firstId, PDO::PARAM_INT);
+		$stmt->bindParam(":range", $rangesize, PDO::PARAM_INT);
+		
+		try{
+			$stmt->execute();			
+			
+			if($stmt->rowCount() > 0){
+				$response = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$events = array();
+				
+				foreach($response as $res){
+					$event = new Event();
+					
+					$event->id = $res['id_event'];
+					$event->name = $res['name'];
+					$event->id_type = $res['id_type'];
+					$event->own_uid = $res['owner_uid'];
+					$event->id_establishment = $res['id_establishment'];
+					$event->latitude = $res['latitude'];
+					$event->longitude = $res['longitude'];
+					$event->radius = $res['radius'];
+					$event->address = $res['address'];
+					$event->begins = $res['begins'];
+					$event->ends = $res['ends'];
+					
+					array_push($events, $event);
+				}
+				
+				return $events;
+			}else{
+				return array(null);
+			}
+		}catch(PDOException $e){
+			echo json_encode(array("error", $e->getMessage()));
+			return null;
+		}
+	}
+	
 	/**
 	 * Recherche des événements comprenant tout ou une partie du mot clé
 	 * 
@@ -264,6 +340,9 @@ class Event{
 		}
 		else return false; /* contre les injections, owner_uid et id_suppresser ne correspondent pas. */
 	}
+	
+	public function getId(){return $this->id;}
+	public function getName(){return $this->name;}
 }
 
 

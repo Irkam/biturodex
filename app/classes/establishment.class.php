@@ -66,6 +66,91 @@ class Establishment{
 		}
 		
 	}
+	
+	public static function getLastEstablishment(){
+		$db = new db();
+		$query = $db->prepare('SELECT * FROM `establishment` ORDER BY `id_establishment` LIMIT 1');
+		try{
+			
+			$query->execute();
+			
+			if($query->rowCount() > 0){
+				
+				$res = $query->fetch(PDO::FETCH_ASSOC);
+				
+				$establishment = new Establishment();
+				
+				$establishment->id = $res['id_establishment'];
+				$establishment->id_type = $res['id_type'];
+				$establishment->name = $res['name'];
+				$establishment->address0 = $res['address0'];
+				$establishment->address1 = $res['address1'];
+				$establishment->city = $res['city'];
+				$establishment->postcode = $res['postcode'];
+				$establishment->latitude = $res['latitude'];
+				$establishment->longitude = $res['longitude'];
+				
+				return $establishment;
+			}else{
+				return array(null);
+			}
+		
+			
+		}catch(PDOException $e){
+			echo json_encode(array("error", $db->errorInfo()));
+			return NULL;
+		}
+	}
+	
+	public static function getEstablishmentsByIdRanged($firstId, $rangeSize=30){
+		if($rangeSize <= 1)
+			return array(Establishment::getLastEstablishment());
+		
+		if($firstId == null || $firstId < 1)
+			$firstId = Establishment::getLastEstablishment()->getId();
+		
+		$db = new db();
+		
+		$query = $db->prepare('SELECT * FROM `establishment` 
+			WHERE `id_establishment` <= :id  ORDER BY `id_establishment` LIMIT 0, :range');
+		
+		$query->bindParam(":id", $firstId, PDO::PARAM_INT);
+		$query->bindParam(":range", $rangeSize, PDO::PARAM_INT);
+		
+		try{
+			$query->execute();
+			
+			if($query->rowCount() > 0){
+				$responses = $query->fetchAll(PDO::FETCH_ASSOC);
+				$establishments = array();
+				
+				foreach($responses as $res){
+					$establishment = new Establishment();
+					
+					$establishment->id = $res['id_establishment'];
+					$establishment->id_type = $res['id_type'];
+					$establishment->name = $res['name'];
+					$establishment->address0 = $res['address0'];
+					$establishment->address1 = $res['address1'];
+					$establishment->city = $res['city'];
+					$establishment->postcode = $res['postcode'];
+					$establishment->latitude = $res['latitude'];
+					$establishment->longitude = $res['longitude'];
+					
+					array_push($establishments, $establishment);
+				}
+				
+				return $establishments;
+			}else{
+				return array(null);
+			}
+		
+
+		}catch(PDOException $e){
+			return json_encode(array("error", $db->errorInfo()));
+			return NULL;
+		}
+	}
 
 	/**
 	Renvoie le nom de la catégorie d'établissement sous forme de string
@@ -149,80 +234,7 @@ class Establishment{
 		));
 	}
 	
-	public static function getLastEtablissement(){
-		$db = new db();
-		$query = $db->prepare('SELECT * FROM establishment ORDER BY id_establishement LIMIT 1');
-		try{
-			
-			$query->execute(array($id));
-			
-			if($query->rowCount() > 0){
-				
-				$res = $query->fetch(PDO::FETCH_ASSOC);
-				
-				$establishment = new Establishment();
-				
-				$establishment->id = $res['$id;'];
-				$establishment->id_type = $res['$id_type;'];
-				$establishment->name = $res['name;'];
-				$establishment->address0 = $res['address0;'];
-				$establishment->address1 = $res['address1;'];
-				$establishment->city = $res['city;'];
-				$establishment->postcode = $res['postcode;'];
-				$establishment->latitude = $res['latitude;'];
-				$establishment->longitude = $res['longitude;'];
-				
-				return $establishment;
-			}else{
-				return array(null);
-			}
-		
-			
-		}catch(PDOException $e){
-			echo json_encode(array("error", $db->errorInfo()));
-			return NULL;
-		}
-	}
-	
-	public static function getEtablissementByIdRanged($idEtablissement, $rangeSize=30){
-		$db = new db();
-		if($idEtablissement == null){
-			$query = $db->execute('SELECT * FROM establishment ORDER BY id_establishement LIMIT 1');
-		}else{
-			$query = $db->execute('SELECT * FROM establishment WHERE id_establishement= '.$idEtablissement.'  ORDER BY id_establishement LIMIT 1');
-		}
-		
-		try{
-			
-			$query->execute(array($id));
-			
-			if($query->rowCount() > 0){
-				
-				$res = $query->fetch(PDO::FETCH_ASSOC);
-				
-				$establishment = new Establishment();
-				
-				$establishment->id = $res['$id;'];
-				$establishment->id_type = $res['$id_type;'];
-				$establishment->name = $res['name;'];
-				$establishment->address0 = $res['address0;'];
-				$establishment->address1 = $res['address1;'];
-				$establishment->city = $res['city;'];
-				$establishment->postcode = $res['postcode;'];
-				$establishment->latitude = $res['latitude;'];
-				$establishment->longitude = $res['longitude;'];
-				
-				array_push($establishment, $establishment);
-			}else{
-				return array(null);
-			}
-		
-
-		}catch(PDOException $e){
-			return json_encode(array("error", $db->errorInfo()));
-			return NULL;
-		}
-	}
+	public function getId(){return $this->id;}
 
 }
 ?>

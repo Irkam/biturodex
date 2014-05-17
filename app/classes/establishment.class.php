@@ -186,7 +186,11 @@ class Establishment{
 	
 	public static function getEtablissementByIdRanged($idEtablissement, $rangeSize=30){
 		$db = new db();
-		$query = $db->execute('SELECT * FROM establishment ORDER BY id_establishement LIMIT 1');
+		if($idEtablissement == null){
+			$query = $db->execute('SELECT * FROM establishment ORDER BY id_establishement LIMIT 1');
+		}else{
+			$query = $db->execute('SELECT * FROM establishment WHERE id_establishement= '.$idEtablissement.'  ORDER BY id_establishement LIMIT 1');
+		}
 		
 		try{
 			

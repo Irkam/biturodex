@@ -35,7 +35,7 @@ class Establishment{
 	
 	
 	/**
-	 * 
+	 * fonction permettant de retrouver un Etablisssement par son id
 	 */
 	public static function getEstablishmentById($id){
 		if(is_null($id))
@@ -67,6 +67,9 @@ class Establishment{
 		
 	}
 	
+	/**
+	 * fonction permettant d'obtenir les derniers Etablissements entré dans la bdd
+	 */
 	public static function getLastEstablishment(){
 		$db = new db();
 		$query = $db->prepare('SELECT * FROM `establishment` ORDER BY `id_establishment` LIMIT 1');
@@ -102,6 +105,10 @@ class Establishment{
 		}
 	}
 	
+	/**
+	 * fonction permettant d'obtenir les derniers Etablissements entré dans la bdd
+	 * à partir de l'id et retourne les 30 derniers establissements suivant
+	 */
 	public static function getEstablishmentsByIdRanged($firstId, $rangeSize=30){
 		if($rangeSize <= 1)
 			return array(Establishment::getLastEstablishment());

@@ -53,6 +53,9 @@ class Event{
 		}
 	}
 	
+	/**
+	 * fonction permettant d'obtenir les derniers Evenements entré dans la bdd
+	 */
 	public static function getLastEvent(){
 		$db = new db();
 		$query = $db->prepare("SELECT * FROM `event` ORDER BY `id_event` DESC LIMIT 1");
@@ -85,6 +88,10 @@ class Event{
 		}
 	}
 	
+	/**
+	 * fonction permettant d'obtenir les derniers Evenements entré dans la bdd
+	 * à partir de l'id et retourne les 30 derniers evenements suivant
+	 */
 	public static function getEventsByIdRanged($firstId, $rangesize=30){
 		if($rangesize <= 1)
 			return array(Event::getLastEvent());

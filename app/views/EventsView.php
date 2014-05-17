@@ -13,7 +13,7 @@ class EventsView extends View {
 	public function displayBody() {
 
 		if (count($this->events)===0) {
-			echo '<div class="container"><br>br><br><br><div style="text-align:center" class="alert">Vous n'avez créé aucun événement.</div></div>';
+			echo '<div class="container"><br>br><br><br><div style="text-align:center" class="alert">Vous n\'avez créé aucun événement.</div></div>';
 			return;
 		}
 		

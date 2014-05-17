@@ -22,9 +22,9 @@ class LoginAction extends Action {
   		if(! isset($login)) $this->setMessageView("erreur : entrez votre pseudo");
 		if(! isset($password)) $this->setMessageView("erreur : entrez votre mot de passe");
   		
-		$user = User::connectUser($login, $password);
+		$user = User::connectUser($login, User::encryptPassword($password));
   		
-  		if(is_null($user)) { $this->setView(getViewByName("Pseudo ou mot de passe incorrect")); return; }
+  		if(is_null($user)) { $this->setView(getViewByName("IncorrectPassword")); return; }
 		else {
 			$this->setMessageView("Connecté en tant que ".$login);
 			$this->setSessionLogin($login);

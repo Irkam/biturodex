@@ -148,6 +148,77 @@ class Establishment{
 			array("id", $this->id),
 		));
 	}
+	
+	public static function getLastEtablissement(){
+		$db = new db();
+		$query = $db->prepare('SELECT * FROM establishment ORDER BY id_establishement LIMIT 1');
+		try{
+			
+			$query->execute(array($id));
+			
+			if($query->rowCount() > 0){
+				
+				$res = $query->fetch(PDO::FETCH_ASSOC);
+				
+				$establishment = new Establishment();
+				
+				$establishment->id = $res['$id;'];
+				$establishment->id_type = $res['$id_type;'];
+				$establishment->name = $res['name;'];
+				$establishment->address0 = $res['address0;'];
+				$establishment->address1 = $res['address1;'];
+				$establishment->city = $res['city;'];
+				$establishment->postcode = $res['postcode;'];
+				$establishment->latitude = $res['latitude;'];
+				$establishment->longitude = $res['longitude;'];
+				
+				return $establishment;
+			}else{
+				return array(null);
+			}
+		
+			
+		}catch(PDOException $e){
+			echo json_encode(array("error", $db->errorInfo()));
+			return NULL;
+		}
+	}
+	
+	public static function getEtablissementByIdRanged($idEtablissement, $rangeSize=30){
+		$db = new db();
+		$query = $db->execute('SELECT * FROM establishment ORDER BY id_establishement LIMIT 1');
+		
+		try{
+			
+			$query->execute(array($id));
+			
+			if($query->rowCount() > 0){
+				
+				$res = $query->fetch(PDO::FETCH_ASSOC);
+				
+				$establishment = new Establishment();
+				
+				$establishment->id = $res['$id;'];
+				$establishment->id_type = $res['$id_type;'];
+				$establishment->name = $res['name;'];
+				$establishment->address0 = $res['address0;'];
+				$establishment->address1 = $res['address1;'];
+				$establishment->city = $res['city;'];
+				$establishment->postcode = $res['postcode;'];
+				$establishment->latitude = $res['latitude;'];
+				$establishment->longitude = $res['longitude;'];
+				
+				array_push($establishment, $establishment);
+			}else{
+				return array(null);
+			}
+		
+
+		}catch(PDOException $e){
+			return json_encode(array("error", $db->errorInfo()));
+			return NULL;
+		}
+	}
 
 }
 ?>

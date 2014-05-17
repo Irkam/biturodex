@@ -12,6 +12,9 @@ class Event{
 	public $latitude, $longitude, $radius, $id_establishment, $address;
 	public $begins, $ends;
 	
+	const ORDER_SOONEST = 0;
+	const ORDER_NEAREST = 1;
+	
 	/**
 	 * Fetches an event by its id
 	 */
@@ -124,6 +127,14 @@ class Event{
 			echo json_encode(array("error", $e->getMessage()));
 			return null;
 		}
+	}
+
+	/**
+	 * TODO
+	 */
+	public static function getEventsByDateTimeRangeLatLngRange($when, $whenrange, $lat, $lng, $latlngrange, 
+	$queryrange=30, $orderpriority=ORDER_SOONEST){
+		
 	}
 	
 	/**

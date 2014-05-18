@@ -1,7 +1,7 @@
 <?php
 require_once("actions/Action.inc.php");
 
-class CreateEstablishmentFormAction extends Action {
+class CreateConversationFormAction extends Action {
 
 	/**
 	 * 
@@ -15,7 +15,7 @@ class CreateEstablishmentFormAction extends Action {
 			return;
 		}
 		
-		$this->setView(getViewByName("CreateEstablishmentForm"));
+		$this->setView(getViewByName("CreateConversationForm"));
 	}
 
 }

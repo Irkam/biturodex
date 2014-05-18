@@ -24,9 +24,12 @@ function getAction() {
 			'Login',
 			'UpdateUserForm',
 			'UpdateUser',
+			'CreateEstablishmentForm',
 			'CreateEstablishment',
 			'CreateEventForm',
 			'CreateEvent',
+			'CreateConversationForm',
+			'CreateConversation',
 			'GetMySurveys',
 			'Search',
 			'Vote');

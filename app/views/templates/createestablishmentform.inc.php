@@ -61,9 +61,16 @@ function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 			echo '<div class="alert '.$this->style.'">'.$this->message.'</div>';
 		?>
 		
+		<?php
 		generateFirstInput("establishmentName", "Nom de l'établissement", "establishmentName", "placeholder bidon");
 		generateEstablishmentTypes();
 		generateAddressInputs();
 		generateCityAndPostcodeInputs();
+		?>
+		
 		<!-- latitude et longitude à gérer -->
+		</div> <!-- Fin du formulaire -->
+		<div class="modal-footer">
+		<input class="btn btn-success" type="submit"	value="Créer l'établissement" />
+	</div>
 </form>

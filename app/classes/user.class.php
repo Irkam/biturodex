@@ -13,6 +13,7 @@ class User{
 	protected $encryptedpasswd;
 	
 	const MAX_SESSION_TIME = 3600;
+	const OPTION_PICTURE = "profile_pic";
 	
 	/**
 	 * Chiffre un mot de passe.
@@ -292,7 +293,8 @@ class User{
 		$newpasswd = User::encryptPassword($newpassword);
 
 	  	$db = new db();
-		$request = $db->prepare('UPDATE `user` SET `passwd`=:newpasswd WHERE `uid`=:uid AND `passwd`=:oldpasswd');
+		$request = $db->prepare('UPDATE user SET passwd=:newpasswd 
+		WHERE uid=:uid AND passwd=:oldpasswd');
 		$request->bindParam(":uid", $this->uid, PDO::PARAM_INT);
 		$request->bindParam(":newpasswd", $newpasswd);
 		$request->bindParam(":oldpasswd", $this->encryptedpasswd);
@@ -311,18 +313,44 @@ class User{
 	}
 	
 	/**
-	 * TODO
+	 * TODO : ajouter à la BDD
 	 */
 	public function updatePicture($picture){
 		if(is_null($picture)) return false;
-		if($picutre['error'] != UPLOAD_ERR_OK){
+		if($picture['error'] != UPLOAD_ERR_OK){
 			
 			return false;
 		}
 		
-		$uploaddest = _UPLOAD_DIR_ . basename($picture['name']);
-		if(move_uploaded_file($picutre['tmp_name'], $uploaddest)) return true;
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
+		if(false === $ext = array_search(
+			$finfo->file($picture['tmp_name']), 
+			array(
+				'jpg' => 'image/jpeg',
+				'jpeg' => 'image/jpeg',
+				'png' => 'image/png'),
+			true)) return false;
+		
+		$uploaddest = _UPLOAD_DIR_ . strval($this->uid) . "_" . time() . "." . $ext;
+		if(move_uploaded_file($picture['tmp_name'], $uploaddest)) return true;
 		else return false;
+		
+		$db = new db();
+		$stmt = $db->prepare("INSERT INTO user_options(uid, option_name, option_value) 
+		VALUES (:uid, :name, :value)");
+		$stmt->bindParam(":uid", $this->uid, PDO::PARAM_INT);
+		$stmt->bindParam(":name", User::OPTION_PICTURE);
+		$stmt->bindParam(":value", $uploaddest);
+		
+		var_dump($stmt);
+		
+		try{
+			return $stmt->execute();
+			var_dump($stmt);
+		}catch(PDOException $e){
+			throw $e;
+			return false;
+		}
 	}
 	
 	/**

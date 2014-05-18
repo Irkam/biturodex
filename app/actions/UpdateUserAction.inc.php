@@ -31,36 +31,40 @@ class UpdateUserAction extends Action {
 		$newPasswordConfirmation = $_POST['updatePassword2'];
 		$nickname = $_SESSION['login'];
 		$picture = $_FILES['updatePicture'];
+		$message = "";
 		
 		
 		if($picture['error'] != UPLOAD_ERR_NO_FILE)
 			if($picture['error'] == UPLOAD_ERR_OK){
 				if($user->updatePicture($picture))
-					$this->setMessageView("Image envoyée avec succès");
+					//$this->setMessageView("Image envoyée avec succès");
+					$message .= "Image envoyée avec succès\n";
 				else				
-					$this->setMessageView("L'image n'a pu être envoyée");
+					//$this->setMessageView("L'image n'a pu être envoyée");
+					$message .= "L'image n'a pu être envoyée\n";
 			}else{
-				$this->setMessageView("Erreur : image invalide");
+				//$this->setMessageView("Erreur : image invalide");
+				$message .= "Erreur : image invalide\n";
 			}
 		
 		$passwordLength = strlen($newPassword); 
 		if($passwordLength < 3 && $passwordLength > 10)
 			return "Le mot de passe doit contenir entre 3 et 10 caractères";
 		
-		if($newPassword != $newPasswordConfirmation) $this->setMessageView("erreur : le mot de passe et sa confirmation sont différents"); //return;
+		if($newPassword != $newPasswordConfirmation) $this->setMessageView($message . "erreur : le mot de passe et sa confirmation sont différents"); //return;
 		
 		//$res = $this->database->updateUser($nickname, $newPassword);
 		$res = $user->updatePassword($newPassword);
 		
 		if(!$res) {
-			$this->setMessageView("Erreur : mot de passe inchangé");
+			$this->setMessageView($message . "Mot de passe inchangé");
 			return;
 		}
 		
 		if ($res===true) {
 			// $this->setSignUpFormView($res);
 			 $this->setUpdateUserFormView("truc");
-			$this->setMessageView("Modification enregistrée");
+			$this->setMessageView($message . "Modification enregistrée");
 		} else $this->setSignUpFormView($res);
 	}
 

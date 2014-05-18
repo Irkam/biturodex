@@ -139,9 +139,11 @@ class Event{
 	/**
 	 * TODO
 	 */
-	public static function getEventsByDateTimeRangeLatLngRange($when, $whenrange, $lat, $lng, $latlngrange, 
+	public static function getEventsByDateTimeRangeLatLngDist($fromtime, $totime, $lat, $lng, $dist, 
 	$queryrange=30, $orderpriority=ORDER_SOONEST){
+		$db = new db();
 		
+		$stmt = $db->prepare();
 	}
 	
 	/**

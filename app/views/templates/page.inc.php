@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
 		<meta charset="utf-8">
-		<title>Sondages</title>
+		<title>Biturodex</title>
 		<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
 </head>
 

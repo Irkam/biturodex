@@ -1,4 +1,4 @@
-<form method="post" action="index.php?action=UpdateUser" class="modal">
+<form method="post" action="index.php?action=UpdateUser" enctype="multipart/form-data" class="modal">
 	<div class="modal-header">
 		<h3>Modification du mot de passe</h3>
 	</div>
@@ -9,7 +9,13 @@
 		<div class="control-group">
 			<label class="control-label" for="signUpLogin">Pseudo</label>
 			<div class="controls">
-				<input  disabled type="text" name="signUpLogin" placeholder="Pseudo" value="<?php echo $this->login; ?>">
+				<input disabled type="text" name="signUpLogin" placeholder="Pseudo" value="<?php echo $this->login; ?>">
+			</div>
+		</div>
+		<div class="control-group">
+			<label class="control-label" for="updatePicture">Image de profil</label>
+			<div class="controls">
+				<input type="file" name="updatePicture" placeholder="Image de profil">
 			</div>
 		</div>
 		<div class="control-group">

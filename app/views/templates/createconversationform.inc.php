@@ -1,20 +1,20 @@
 <?php function generateUser() { ?>
-	<label id="label_sub" for=establishmentIdType">Type d établissement<select>
-	<option value="bar" selected>Bar</option>
-	<option value="cinema">Cin�ma</option>
-	<option value="nightclub">Bo�te de nuit</option>
-	<option value="outside">Lieu en ext�rieur</option>
-	</select></label><br> <?php
+	<script type='text/javascript' src='script_js/js.js'></script>
+	<label id="label_sub" for=establishmentIdType">Choix de l'utilisateur<select>
+		<option id="1" value="bar" selected>Bart</option>
+		<option id="2" value="cinema">Cina</option>
+		<option id="3" value="nightclub">Bob</option>
+		<option id="4" value="outside">Lionel</option>
+	</select></label><br> 
+	<input type="button" name="ajout" value="Ajout" onclick="ajoutUser()" />
+	<?php
 } 
 
 // input pour le titre/nom, l'input la plus importante !
 // il faut normalement s'assurer que $for $label et $name ne soient pas vides (ce n'est pas g�nant pour $placeHolder)
-function generateFirst($for, $label, $name, $placeHolder) { ?>
+function generateFirst($name) { ?>
 	<div class="control-group">
-			<label class="control-label" for="<?php echo($for); ?>"><?php echo($label); ?></label>
-			<div class="controls">
-				<input class="span3" type="text" name="<?php echo($name); ?>" placeholder="<?php echo($placeHolder); ?>">
-			</div>
+			<label class="control-label" for="<?php echo($name); ?>">Créer une conversation</label>	
 		</div>
 		<br> <?php
 }
@@ -30,7 +30,7 @@ function generateFirst($for, $label, $name, $placeHolder) { ?>
 		?>
 		
 		<?php 
-		generateFirst("establishmentName", "Nom de l'établissement", "establishmentName", "placeholder bidon");
+		generateFirst("conversationName");
 		generateUser();
 		 ?>
 		<!-- latitude et longitude à gérer -->

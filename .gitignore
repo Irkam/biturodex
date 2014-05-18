@@ -3,3 +3,4 @@
 *.odt#
 *.stackdump
 config.inc.php
+app/config.inc.php

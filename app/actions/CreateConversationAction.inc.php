@@ -2,7 +2,7 @@
 
 require_once("actions/Action.inc.php");
 
-class CreateEstablishmentAction extends Action {
+class CreateConversationAction extends Action {
 
 	/**
 	 * Traite les données envoyées par le formulaire de création d'événement.
@@ -40,16 +40,16 @@ class CreateEstablishmentAction extends Action {
 		$result = $this->database->saveSurvey($survey);
 		
 		if (!$result) {
-			$this->setAddSurveyFormView("Impossible de créer votre établissement.");
+			$this->setAddSurveyFormView("Impossible de créer votre Conversation.");
 			return;
 		}
 
-		$this->setMessageView("Votre établisement a été créé avec succès.");
+		$this->setMessageView("Votre Conversation a été créé avec succès.");
 		
 	}
 
 	private function setAddSurveyFormView($message) {
-		$this->setView(getViewByName("CreateEstablishmentForm"));
+		$this->setView(getViewByName("CreateConversationForm"));
 		$this->getView()->setMessage($message, "alert-error");
 	}
 

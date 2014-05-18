@@ -137,13 +137,138 @@ class Event{
 	}
 
 	/**
-	 * TODO
+	 * TODO : ajout type
 	 */
 	public static function getEventsByDateTimeRangeLatLngDist($fromtime, $totime, $lat, $lng, $dist, 
-	$queryrange=30, $orderpriority=ORDER_SOONEST){
+	$queryrange=30, $orderpriority=Event::ORDER_SOONEST){
 		$db = new db();
 		
-		$stmt = $db->prepare();
+		$stmt = $db->prepare("SELECT `id_event`, `name`, `owner_uid`, `id_establishment`, `latitude`, `longitude`, `radius`, `begins`, `ends`, `id_type`, `address`, get_distance(:lat,:lng,`latitude`,`longitude`) as dist  
+		FROM `event` 
+		WHERE `begins`>=:fromtime AND `ends`<=:totime 
+		AND get_distance(:lat,:lng,`latitude`,`longitude`) <= :dist 
+		ORDER BY :order 
+		LIMIT 0,:range");
+		$stmt->bindParam(":fromtime", $fromtime, PDO::PARAM_INT);
+		$stmt->bindParam(":totime", $totime, PDO::PARAM_INT);
+		$stmt->bindParam(":lat", $lat, PDO::PARAM_INT);
+		$stmt->bindParam(":lng", $lng, PDO::PARAM_INT);
+		$stmt->bindParam(":dist", $dist, PDO::PARAM_INT);
+		$stmt->bindParam(":range", $queryrange, PDO::PARAM_INT);
+		
+		switch ($orderpriority) {
+			case Event::ORDER_SOONEST:
+				$order = "begins";
+				$stmt->bindParam(":order", $order);
+				break;
+			case Event::ORDER_NEAREST:
+				$order = "dist";
+				$stmt->bindParam(":order", $order);
+				break;
+			default:
+				$stmt->bindParam(":order", "begins");
+				break;
+		}
+		
+		try{
+			$stmt->execute();
+			
+			if($stmt->rowCount() > 0){
+				$responses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$events = array();
+				
+				foreach($responses as $res){
+					$event = new Event();
+					
+					$event->id = $res['id_event'];
+					$event->name = $res['name'];
+					$event->id_type = $res['id_type'];
+					$event->own_uid = $res['owner_uid'];
+					$event->id_establishment = $res['id_establishment'];
+					$event->latitude = $res['latitude'];
+					$event->longitude = $res['longitude'];
+					$event->radius = $res['radius'];
+					$event->address = $res['address'];
+					$event->begins = $res['begins'];
+					$event->ends = $res['ends'];
+					
+					array_push($events, $event);
+				}
+				
+				return $events;
+			}else
+				return array(null);
+		}catch(PDOException $e){
+			throw $e;
+			return null;
+		}
+	}
+
+	public static function getEventsByDateTimeRangeLatLngDistType($fromtime, $totime, $lat, $lng, $dist, $type,
+	$queryrange=30, $orderpriority=Event::ORDER_SOONEST){
+		$db = new db();
+		
+		$stmt = $db->prepare("SELECT `id_event`, `name`, `owner_uid`, `id_establishment`, `latitude`, `longitude`, `radius`, `begins`, `ends`, `id_type`, `address`, get_distance(:lat,:lng,`latitude`,`longitude`) as dist  
+		FROM `event` 
+		WHERE `begins`>=:fromtime AND `ends`<=:totime 
+		AND get_distance(:lat,:lng,`latitude`,`longitude`) <= :dist 
+		AND `type`=:type
+		ORDER BY :order 
+		LIMIT 0,:range");
+		$stmt->bindParam(":fromtime", $fromtime, PDO::PARAM_INT);
+		$stmt->bindParam(":totime", $totime, PDO::PARAM_INT);
+		$stmt->bindParam(":lat", $lat, PDO::PARAM_INT);
+		$stmt->bindParam(":lng", $lng, PDO::PARAM_INT);
+		$stmt->bindParam(":dist", $dist, PDO::PARAM_INT);
+		$stmt->bindParam(":type", $type, PDO::PARAM_INT);
+		$stmt->bindParam(":range", $queryrange, PDO::PARAM_INT);
+		
+		switch ($orderpriority) {
+			case Event::ORDER_SOONEST:
+				$order = "begins";
+				$stmt->bindParam(":order", $order);
+				break;
+			case Event::ORDER_NEAREST:
+				$order = "dist";
+				$stmt->bindParam(":order", $order);
+				break;
+			default:
+				$stmt->bindParam(":order", "begins");
+				break;
+		}
+		
+		try{
+			$stmt->execute();
+			
+			if($stmt->rowCount() > 0){
+				$responses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$events = array();
+				
+				foreach($responses as $res){
+					$event = new Event();
+					
+					$event->id = $res['id_event'];
+					$event->name = $res['name'];
+					$event->id_type = $res['id_type'];
+					$event->own_uid = $res['owner_uid'];
+					$event->id_establishment = $res['id_establishment'];
+					$event->latitude = $res['latitude'];
+					$event->longitude = $res['longitude'];
+					$event->radius = $res['radius'];
+					$event->address = $res['address'];
+					$event->begins = $res['begins'];
+					$event->ends = $res['ends'];
+					
+					array_push($events, $event);
+				}
+				
+				return $events;
+			}else
+				return array(null);
+		}catch(PDOException $e){
+			throw $e;
+			return null;
+		}
 	}
 	
 	/**

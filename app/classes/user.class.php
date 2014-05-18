@@ -99,6 +99,43 @@ class User{
 		}
 	}
 	
+	public static function getUsersByNameLike($name, $queryrange){
+		$db = new db();
+		$request = $db->prepare("SELECT user.uid, user.username, user.mailaddress, user.name, user.firstname 
+		FROM user WHERE username LIKE :name LIMIT 0,:range");
+		$name = "%$name%";
+		$request->bindParam(":name", $name);
+		$request->bindParam(":range", $queryrange, PDO::PARAM_INT);
+		
+		if ($request===false) return json_encode(array("error", "PDO error"));
+		
+		try{
+			$request->execute();
+			
+			if($request->rowCount()>0){
+				$users = array();				
+				$results = $request->fetchAll(PDO::FETCH_OBJ);
+				
+				foreach($results as $result){
+					$user = new User();
+					$user->uid = $result->uid;
+					$user->username = $result->username;
+					$user->email = $result->mailaddress;
+					$user->name = $result->name;
+					$user->firstname = $result->firstname;
+					
+					array_push($users, $user);
+				}
+			
+			return $users;
+			}else return array(null);
+		
+		}catch(PDOException $e){
+			throw $e;
+			return NULL;
+		}
+	}
+	
 	
 	public static function createUser($username, $mailaddress, $passwd, $name, $firstname){
 		$user = new User();

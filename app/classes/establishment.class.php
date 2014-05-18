@@ -159,6 +159,96 @@ class Establishment{
 		}
 	}
 
+	public static function getEstablishmentsByLatLngDistType($lat, $lng, $dist, $type, $queryrange=30){
+		$db = new db();
+		
+		$stmt = $db->prepare("SELECT `id_establishment`, `id_type`, `name`, `address0`, `address1`, `city`, `postcode`, `latitude`, `longitude`, get_distance(:lat,:lng,`latitude`,`longitude`) as dist 
+		FROM `establishment`   
+		WHERE get_distance(:lat,:lng,`latitude`,`longitude`) <= :dist
+		AND `id_type`=:type
+		ORDER BY dist
+		LIMIT 0,:range");
+		$stmt->bindParam(":lat", $lat, PDO::PARAM_INT);
+		$stmt->bindParam(":lng", $lng, PDO::PARAM_INT);
+		$stmt->bindParam(":dist", $dist, PDO::PARAM_INT);
+		$stmt->bindParam(":type", $type, PDO::PARAM_INT);
+		$stmt->bindParam(":range", $queryrange, PDO::PARAM_INT);
+		
+		try{
+			$stmt->execute();
+			
+			if($stmt->rowCount() > 0){
+				$responses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$establishments = array();
+				
+				foreach($responses as $res){
+					$establishment = new Establishment();
+					
+					$establishment->id = $res['id_establishment'];
+					$establishment->id_type = $res['id_type'];
+					$establishment->name = $res['name'];
+					$establishment->address0 = $res['address0'];
+					$establishment->address1 = $res['address1'];
+					$establishment->city = $res['city'];
+					$establishment->postcode = $res['postcode'];
+					$establishment->latitude = $res['latitude'];
+					$establishment->longitude = $res['longitude'];
+					
+					array_push($establishments, $establishment);
+				}
+				
+				return $establishments;
+			}else
+				return array(null);
+		}catch(PDOException $e){
+			throw $e;
+			return null;
+		}
+	}
+
+	public static function getEstablishmentsByPostcode($postcode, $queryrange=30){
+		$db = new db();
+		
+		$stmt = $db->prepare("SELECT * 
+		FROM `establishment`   
+		WHERE `postcode`=:postcode
+		AND `id_type`=:type
+		ORDER BY dist
+		LIMIT 0,:range");
+		$stmt->bindParam(":postcode", $postcode);
+		
+		try{
+			$stmt->execute();
+			
+			if($stmt->rowCount() > 0){
+				$responses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$establishments = array();
+				
+				foreach($responses as $res){
+					$establishment = new Establishment();
+					
+					$establishment->id = $res['id_establishment'];
+					$establishment->id_type = $res['id_type'];
+					$establishment->name = $res['name'];
+					$establishment->address0 = $res['address0'];
+					$establishment->address1 = $res['address1'];
+					$establishment->city = $res['city'];
+					$establishment->postcode = $res['postcode'];
+					$establishment->latitude = $res['latitude'];
+					$establishment->longitude = $res['longitude'];
+					
+					array_push($establishments, $establishment);
+				}
+				
+				return $establishments;
+			}else
+				return array(null);
+		}catch(PDOException $e){
+			throw $e;
+			return null;
+		}
+	}
+
 	/**
 	Renvoie le nom de la catégorie d'établissement sous forme de string
 	*/

@@ -90,6 +90,7 @@ class User{
 			$user->email = $result->mailaddress;
 			$user->name = $result->name;
 			$user->firstname = $result->firstname;
+			$user->sessionToken = $token;
 			
 			return $user;
 		
@@ -331,10 +332,10 @@ class User{
 
 	  	$db = new db();
 		$request = $db->prepare('UPDATE user SET passwd=:newpasswd 
-		WHERE uid=:uid AND passwd=:oldpasswd');
+		WHERE uid=:uid AND sesstoken=:token');
 		$request->bindParam(":uid", $this->uid, PDO::PARAM_INT);
 		$request->bindParam(":newpasswd", $newpasswd);
-		$request->bindParam(":oldpasswd", $this->encryptedpasswd);
+		$request->bindParam(":token", $this->sessionToken);
 		
 		try{
 			if(!$request->execute())
@@ -355,7 +356,6 @@ class User{
 	public function updatePicture($picture){
 		if(is_null($picture)) return false;
 		if($picture['error'] != UPLOAD_ERR_OK){
-			
 			return false;
 		}
 		
@@ -369,21 +369,17 @@ class User{
 			true)) return false;
 		
 		$uploaddest = _UPLOAD_DIR_ . strval($this->uid) . "_" . time() . "." . $ext;
-		if(move_uploaded_file($picture['tmp_name'], $uploaddest)) return true;
-		else return false;
+		if(!move_uploaded_file($picture['tmp_name'], $uploaddest)) return false;
 		
 		$db = new db();
-		$stmt = $db->prepare("INSERT INTO user_options(uid, option_name, option_value) 
-		VALUES (:uid, :name, :value)");
+		$stmt = $db->prepare("CALL `set_user_option`(:uid, :name, :value)");
+		$optionname = User::OPTION_PICTURE;
 		$stmt->bindParam(":uid", $this->uid, PDO::PARAM_INT);
-		$stmt->bindParam(":name", User::OPTION_PICTURE);
+		$stmt->bindParam(":name", $optionname);
 		$stmt->bindParam(":value", $uploaddest);
-		
-		var_dump($stmt);
 		
 		try{
 			return $stmt->execute();
-			var_dump($stmt);
 		}catch(PDOException $e){
 			throw $e;
 			return false;

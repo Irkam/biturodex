@@ -1,5 +1,6 @@
 <?php
 require_once("actions/Action.inc.php");
+require_once(dirname(__FILE__) . "/../classes/Establishment.class.php");
 
 class CreateEstablishmentFormAction extends Action {
 

@@ -14,7 +14,7 @@ class User{
 	
 	const MAX_SESSION_TIME = 3600;
 	const OPTION_PICTURE = "profile_pic";
-	const PICTURE_DEFAULT = "/uploads/default.png";
+	const PICTURE_DEFAULT = "uploads/default.png";
 	
 	/**
 	 * Chiffre un mot de passe.

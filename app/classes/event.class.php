@@ -388,7 +388,7 @@ class Event{
 		
 		try{
 			$query->execute();
-			$res = $query->fetch(PDO::FETCH_ASSOC);
+			$res = $query->fetchAll(PDO::FETCH_ASSOC);
 			return $res;
 		}catch(PDOException $e){
 			throw $e;

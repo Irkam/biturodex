@@ -1,6 +1,7 @@
 <?php
 
 require_once("actions/Action.inc.php");
+require_once(dirname(__FILE__) . "/../classes/Event.class.php");
 
 class CreateEventFormAction extends Action {
 

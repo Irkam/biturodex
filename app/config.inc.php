@@ -7,5 +7,5 @@ define("_DB_PASSWD_", "euM3Pp892cRUSGN2");
 define("_DB_PASSWD_SALT_NUM_", "08");
 define("_DB_PASSWD_SALT_STR_", "lololololololololololol");
 define("_UPLOAD_MOVE_DIR_", dirname(__FILE__) . "/uploads/");
-define("_UPLOAD_DIR_", "/uploads/");
+define("_UPLOAD_DIR_", "uploads/");
 ?>

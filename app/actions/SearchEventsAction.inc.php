@@ -26,7 +26,13 @@ class SearchEventsAction extends Action {
 		$keywords = split(" ", $searchstring);
 		
 		$events = Event::getEventsByName($keywords);
+		$res = $events->getEventsByName($keywords);
+		$_SESSION = $res;
 		
+		if (!is_null($res)) {
+			$this->setCreateEstablishmentFormView($res);
+			$this->setMessageView("Votre établissement a bien été créé");
+		} else $this->setSearchFormView($res);	
 		?>
 		<table>
 			
@@ -38,6 +44,11 @@ class SearchEventsAction extends Action {
 		
 		</table>
 		<?php
+	}
+	
+	private function setSearchFormView($message) {
+		$this->setView(getViewByName("SearchForm"));
+		$this->getView()->setMessage($message, "alert-error");
 	}
 }
 

@@ -287,6 +287,21 @@ class Establishment{
 		}
 	}
 	
+	public static function getTypes(){
+		$db = new db();
+		$query = $db->prepare("SELECT * FROM `establishment_type`");
+		
+		try{
+			$query->execute();
+			$res = $query->fetch(PDO::FETCH_ASSOC);
+			return $res;
+		}catch(PDOException $e){
+			throw $e;
+		}
+		
+		return null;
+	}
+	
 	/**
 	Renvoie une liste d'employés attachés à l'établissement
 	*/

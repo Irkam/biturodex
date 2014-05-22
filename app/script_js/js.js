@@ -1,25 +1,29 @@
+var usercount = 0;
+
 function ajoutUser(){
+	newuser = document.getElementById("usersearchinput").value;
+	user = getUserByName(newuser);
 	
-	//récupère le contenu du select
-	//var select = document.getElementById("bidonn").value;
-	var select = document.getElementsByTagName("bidon").value;
-	//var choice = select.selectedIndex  ;// Récupération de l'index du <option> choisi
- 
+	newoption = document.createElement("li");
+	//newoption.setAttribute("name", "user0");
+	//newoption.setAttribute("value", newuser);
+	newoption.innerHTML = user.username;
+	document.getElementById("useraddlist").appendChild(newoption);
 	
-	//document.write(select);
-	//Création du nouveau Noeud
-	var Nodenew = document.createElement("option");
-	//var Nodenew2 = document.createElement("option");
-	var texte = document.createTextNode(select);
-	//var texte2 = document.createTextNode("option 3");
-	Nodenew.appendChild(texte);
-	//Nodenew2.appendChild(texte2);
+	//Ajout champ hidden
+	newinputhidden = document.createElement("input");
+	newinputhidden.setAttribute("type", "hidden");
+	newinputhidden.setAttribute("name", "user" + usercount);
+	newinputhidden.setAttribute("value", user.uid);
+	document.getElementById("newconversationform").appendChild(newinputhidden);
+	usercount += 1;
 	
-	//Recupération du Noeud "position"
-	var Node = document.getElementById("affiche");
-	var NodeListe = Node.getElementsByTagName("option");
-	var position = NodeListe.item(1);
-	
-	//Insertion
-	Node.appendChild(Nodenew,position);
+	document.getElementById("conversationuserscount").setAttribute("value", usercount);
+}
+
+function getUserByName(username){
+	url = "http://localhost/biturodex/service/getusersbyname.php?name=" + username;
+	ajaxquery = $.ajax(url);
+	users = $.parseJSON(ajaxquery.responseText);
+	return users[0];
 }

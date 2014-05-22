@@ -1,16 +1,5 @@
 <?php function generateUser() { ?>
-	<script type='text/javascript' src='script_js/js.js'></script>
-	<label id="label_sub" for=conversationIdType">Choix de l'utilisateur<select id="bidon" name="bidonn">
-		<option id="1" value="bar" selected>Bart</option>
-		<option id="2" value="cinema">Cina</option>
-		<option id="3" value="nightclub">Bob</option>
-		<option id="4" value="outside">Lionel</option>
-	</select></label><br> 
-	<input type="button" name="ajout" value="Ajout" onclick="ajoutUser()" />
-	<select size="3" id="affiche">
-  		<option>Option 0</option>
-  		<option>Option 1</option>
-	</select>
+	
 	<?php
 } 
 
@@ -24,7 +13,8 @@ function generateFirst($name) { ?>
 }
 ?>
 
-<form method="post" action="index.php?action=AddSurvey" class="modal">
+<form method="post" action="index.php?action=AddSurvey" class="modal" id="newconversationform">
+	<input type="hidden" name="useraddcount" id="conversationuserscount" value=0 />
 	<div class="modal-header">
 		<h3 style="text-align:center">Création d'une Conversation</h3>
 	</div>
@@ -34,10 +24,17 @@ function generateFirst($name) { ?>
 		?>
 		
 		<?php 
-		generateFirst("conversationName");
-		generateUser();
-		 ?>
-		<!-- latitude et longitude à gérer -->
+			generateFirst("conversationName");
+		?>
+		
+		<script type='text/javascript' src='script_js/js.js'></script>
+		<script type='text/javascript' src='jquery-2.1.0.js'></script>
+		<input type="text" id="usersearchinput" />
+		<input type="button" name="ajout" value="Ajout" onclick="ajoutUser()" />
+		
+		<ul id="useraddlist">
+			
+		</ul>
 		
 		</div> <!-- Fin du formulaire -->
 	<div class="modal-footer">

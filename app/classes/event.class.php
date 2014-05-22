@@ -382,6 +382,21 @@ class Event{
 		}
 	}
 	
+	public static function getTypes(){		
+		$db = new db();
+		$query = $db->prepare("SELECT * FROM `event_type`");
+		
+		try{
+			$query->execute();
+			$res = $query->fetch(PDO::FETCH_ASSOC);
+			return $res;
+		}catch(PDOException $e){
+			throw $e;
+		}
+		
+		return null;
+	}
+	
 	/**
 	 * Creates an event from scratch
 	 */

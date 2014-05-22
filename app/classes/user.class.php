@@ -14,6 +14,7 @@ class User{
 	
 	const MAX_SESSION_TIME = 3600;
 	const OPTION_PICTURE = "profile_pic";
+	const PICTURE_DEFAULT = "/uploads/default.png";
 	
 	/**
 	 * Chiffre un mot de passe.
@@ -368,15 +369,17 @@ class User{
 				'png' => 'image/png'),
 			true)) return false;
 		
-		$uploaddest = _UPLOAD_DIR_ . strval($this->uid) . "_" . time() . "." . $ext;
-		if(!move_uploaded_file($picture['tmp_name'], $uploaddest)) return false;
+		$uploaddest = strval($this->uid) . "_" . time() . "." . $ext;
+		$uploadmovedest = _UPLOAD_MOVE_DIR_ . $uploaddest;
+		$uploaddbdest = _UPLOAD_DIR_ . $uploaddest;
+		if(!move_uploaded_file($picture['tmp_name'], $uploadmovedest)) return false;
 		
 		$db = new db();
 		$stmt = $db->prepare("CALL `set_user_option`(:uid, :name, :value)");
 		$optionname = User::OPTION_PICTURE;
 		$stmt->bindParam(":uid", $this->uid, PDO::PARAM_INT);
 		$stmt->bindParam(":name", $optionname);
-		$stmt->bindParam(":value", $uploaddest);
+		$stmt->bindParam(":value", $uploaddbdest);
 		
 		try{
 			return $stmt->execute();
@@ -417,6 +420,29 @@ class User{
 	
 	public function getUID(){return $this->uid;}
 	public function getSessToken(){return $this->sessionToken;}
+	
+	public function getPictureOrDefault(){
+		$db = new db();
+		$stmt = $db->prepare("SELECT `option_value` AS `picture` FROM `user_options` 
+			WHERE `uid` = :uid AND `option_name` = :optname
+			LIMIT 1");
+		$optname = User::OPTION_PICTURE;
+		
+		$stmt->bindParam(":uid", $this->uid);
+		$stmt->bindParam(":optname", $optname);
+		
+		try{
+			$stmt->execute();
+			if($stmt->rowCount() == 1){
+				$res = $stmt->fetch(PDO::FETCH_ASSOC);
+				return $res['picture'];
+			}
+		}catch(PDOException $e){
+			throw $e;
+		}
+		
+		return User::PICTURE_DEFAULT;
+	}
 	
 	public function toJSON(){		
 		return json_encode(array(

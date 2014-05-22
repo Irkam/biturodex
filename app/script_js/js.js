@@ -1,3 +1,23 @@
 function ajoutUser(){
-	alert("ça marche");
+	
+	//récupère le contenu du select
+	//var select = document.getElementById("label_sub").value;
+	var select = document.getElementsByTagName("bidon").value;
+	
+	//document.write(select);
+	//Création du nouveau Noeud
+	var Nodenew = document.createElement("option");
+	//var Nodenew2 = document.createElement("option");
+	var texte = document.createTextNode(select);
+	var texte2 = document.createTextNode("option 3");
+	Nodenew.appendChild(texte);
+	//Nodenew2.appendChild(texte2);
+	
+	//Recupération du Noeud "position"
+	var Node = document.getElementById("affiche");
+	var NodeListe = Node.getElementsByTagName("option");
+	var position = NodeListe.item(1);
+	
+	//Insertion
+	Node.appendChild(Nodenew,position);
 }

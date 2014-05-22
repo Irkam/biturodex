@@ -1,12 +1,16 @@
 <?php function generateUser() { ?>
 	<script type='text/javascript' src='script_js/js.js'></script>
-	<label id="label_sub" for=establishmentIdType">Choix de l'utilisateur<select>
+	<label id="bidon" for=conversationIdType">Choix de l'utilisateur<select>
 		<option id="1" value="bar" selected>Bart</option>
 		<option id="2" value="cinema">Cina</option>
 		<option id="3" value="nightclub">Bob</option>
 		<option id="4" value="outside">Lionel</option>
 	</select></label><br> 
 	<input type="button" name="ajout" value="Ajout" onclick="ajoutUser()" />
+	<select size="3" id="affiche">
+  		<option>Option 0</option>
+  		<option>Option 1</option>
+	</select>
 	<?php
 } 
 

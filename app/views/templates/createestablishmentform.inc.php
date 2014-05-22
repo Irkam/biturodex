@@ -1,9 +1,9 @@
 <?php function generateEstablishmentTypes() { ?>
 	<label id="label_sub" for=establishmentIdType">Type d établissement<select>
 	<option value="bar" selected>Bar</option>
-	<option value="cinema">Cin�ma</option>
-	<option value="nightclub">Bo�te de nuit</option>
-	<option value="outside">Lieu en ext�rieur</option>
+	<option value="cinema">Cinéma</option>
+	<option value="nightclub">Boîte de nuit</option>
+	<option value="outside">Lieu en extérieur</option>
 	</select></label><br> <?php
 } 
 
@@ -40,7 +40,7 @@ function generateCityAndPostcodeInputs() { ?>
 }
 
 // input pour le titre/nom, l'input la plus importante !
-// il faut normalement s'assurer que $for $label et $name ne soient pas vides (ce n'est pas g�nant pour $placeHolder)
+// il faut normalement s'assurer que $for $label et $name ne soient pas vides (ce n'est pas gênant pour $placeHolder)
 function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 	<div class="control-group">
 			<label class="control-label" for="<?php echo($for); ?>"><?php echo($label); ?></label>
@@ -52,7 +52,7 @@ function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 }
 ?>
 
-<form method="post" action="index.php?action=AddSurvey" class="modal">
+<form method="post" action="index.php?action=AddEstablishment" class="modal">
 	<div class="modal-header">
 		<h3 style="text-align:center">Création d'un établissement</h3>
 	</div>
@@ -62,7 +62,7 @@ function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 		?>
 		
 		<?php
-		generateFirstInput("establishmentName", "Nom de l'établissement", "establishmentName", "placeholder bidon");
+		generateFirstInput("establishmentName", "Nom de l'établissement", "establishmentName", "Nom");
 		generateEstablishmentTypes();
 		generateAddressInputs();
 		generateCityAndPostcodeInputs();

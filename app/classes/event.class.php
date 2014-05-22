@@ -431,9 +431,12 @@ class Event{
 		try{
 			$query->execute(array($this->name, $this->own_uid, $this->id_establishment, $this->latitude, $this->longitude, $this->radius, $this->begins, $this->ends, $this->id_type, $this->address));
 			$this->id = $db->lastInsertId();
+			return $this;
 		}catch(PDOException $e){
-			return json_decode(array("error", $e->getError()));
+			throw $e;
 		}
+		
+		return null;
 	}
 	
 	

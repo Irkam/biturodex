@@ -46,14 +46,14 @@ class CreateEstablishmentAction extends Action {
 	
 	public function run() {
 		$establishmentName = $_POST['establishmentName'];
-		// $id_type = $_POST['establishmentType']; // NE FONCTIONNERA PAS
-		$id_type = 1;
+		$id_type = intval($_POST['establishmentIdType']);
 		$address0 = $_POST['address0'];
 		$address1 = $_POST['address1'];
 		$city = $_POST['city'];
 		$postcode = $_POST['postcode'];
-		$lat = 1; // à remplacer par la vraie latitude
-		$lng = 1; // à remplacer par la vraie longitude
+		$lat = doubleval($_POST['coordlat']);
+		$lng = doubleval($_POST['coordlng']);
+		
 		$establishment = Establishment::createEstablishment($establishmentName, $id_type, $address0, $address1, $city, $postcode, $lat, $lng);
 		$res = $establishment->addEstablishment();
 		

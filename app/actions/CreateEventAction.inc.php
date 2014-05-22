@@ -33,22 +33,21 @@ class CreateEventAction extends Action {
 		$endsYear = ;*/
 		
 		
-		$typeEvent = "bidon";
-		$place = &$_POST['place'];
+		$typeEvent = intval($_POST['eventIdType']);
 		$eventName = &$_POST['establishmentName']; // peut être vide si l'événement n'a pas lieu dans un établissement répertorié dans la BDD
 		$address0 = &$_POST['address0'];
 		$address2 = &$_POST['address2'];
 		$postcode = &$_POST['postcode'];
 		$city = &$_POST['city'];
-		$lng = 1;
-		$lat = 1;
+		$lat = doubleval($_POST['coordlat']);
+		$lng = doubleval($_POST['coordlng']);
 		$rad = 1;
 		$starts = "1" ;
-		$end = "1";
+		$ends = "1";
 		$uid = 1;
 
 		// insérer les dates données via le datepicker
-		if (empty($place) || empty($address0) || empty($postcode) || empty($city)) {
+		if (empty($address0) || empty($city)) {
 			$this->setCreateEventFormView("Le remplissage des champs marqués d'un * est obligatoire.");
 			return;
 		}
@@ -58,7 +57,7 @@ class CreateEventAction extends Action {
 		$event = Event::createEvent($eventName, $typeEvent, $uid, $lat, $lng, $rad, $address=null, $estab=null, $starts, $ends);
 		$result = $event->addEvent();
 
-		if (!$result) {
+		if (is_null($result)) {
 			$this->setCreateEventFormView("Impossible de créer votre événement.");
 			return;
 		}

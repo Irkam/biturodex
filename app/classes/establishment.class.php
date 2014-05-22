@@ -336,10 +336,9 @@ class Establishment{
 			return $this;
 		}catch(PDOException $e){
 			throw $e;
-			return null;
 		}
 		
-		return json_encode(array("error", $db->errorInfo()));
+		return null;
 	}
 	
 	public function toJSON(){

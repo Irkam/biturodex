@@ -16,9 +16,9 @@ function generateAddressInputs() { ?>
 		</div>
 		
 	<div class="control-group">
-		<label class="control-label" for="address2">Suite de l'adresse</label>
+		<label class="control-label" for="address1">Suite de l'adresse</label>
 		<div class="controls">
-			<input class="span3" type="text" name="address2" placeholder="Si l'adresse est trop longue...">
+			<input class="span3" type="text" name="address1" placeholder="Si l'adresse est trop longue...">
 		</div>
 	</div> <?php
 }
@@ -52,7 +52,7 @@ function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 }
 ?>
 
-<form method="post" action="index.php?action=AddEstablishment" class="modal">
+<form method="post" action="index.php?action=CreateEstablishment" class="modal">
 	<div class="modal-header">
 		<h3 style="text-align:center">Création d'un établissement</h3>
 	</div>

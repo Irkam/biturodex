@@ -52,9 +52,9 @@ function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 }
 ?>
 
-<form method="post" action="index.php?action=AddEstablishment" class="modal">
+<form method="post" action="index.php?action=CreateEvent" class="modal">
 	<div class="modal-header">
-		<h3 style="text-align:center">Création d'un établissement</h3>
+		<h3 style="text-align:center">Création d'un événement</h3>
 	</div>
 	<div class="form-horizontal modal-body">
 		<?php	if ($this->message!=="")
@@ -71,6 +71,6 @@ function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 		<!-- latitude et longitude à gérer -->
 		</div> <!-- Fin du formulaire -->
 		<div class="modal-footer">
-		<input class="btn btn-success" type="submit"	value="Créer l'établissement" />
+		<input class="btn btn-success" type="submit"	value="Créer l'événement" />
 	</div>
 </form>

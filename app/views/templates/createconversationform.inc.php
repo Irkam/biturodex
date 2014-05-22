@@ -1,6 +1,6 @@
 <?php function generateUser() { ?>
 	<script type='text/javascript' src='script_js/js.js'></script>
-	<label id="bidon" for=conversationIdType">Choix de l'utilisateur<select>
+	<label id="label_sub" for=conversationIdType">Choix de l'utilisateur<select id="bidon" name="bidonn">
 		<option id="1" value="bar" selected>Bart</option>
 		<option id="2" value="cinema">Cina</option>
 		<option id="3" value="nightclub">Bob</option>

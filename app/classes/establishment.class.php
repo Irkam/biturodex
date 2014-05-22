@@ -313,13 +313,15 @@ class Establishment{
 		$db = new db();
 		$query = $db->prepare("INSERT INTO `establishment`(`id_type`, `name`, `address0`, `address1`, `city`, `postcode`, `latitude`, `longitude`) VALUES (?,?,?,?,?,?,?,?)");
 		
-		if ($query===false) return false;
+		if ($query===false) return null;
 		
 		try{
 			$query->execute(array($this->id_type, $this->name, $this->address0, $this->address1, $this->city, $this->postcode, $this->latitude, $this->longitude));
 			$this->id = $db->lastInsertId();
+			return $this;
 		}catch(PDOException $e){
-			return false;
+			throw $e;
+			return null;
 		}
 		
 		return json_encode(array("error", $db->errorInfo()));

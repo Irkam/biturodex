@@ -1,6 +1,7 @@
 <?php
 
-require_once("actions/Action.inc.php");
+require_once(dirname(__FILE__) . "/Action.inc.php");
+require_once(dirname(__FILE__) . "/../classes/establishment.class.php");
 
 class CreateEstablishmentAction extends Action {
 
@@ -48,13 +49,14 @@ class CreateEstablishmentAction extends Action {
 		// $id_type = $_POST['establishmentType']; // NE FONCTIONNERA PAS
 		$id_type = 1;
 		$address0 = $_POST['address0'];
-		$address1 = $_POST['address2'];
+		$address1 = $_POST['address1'];
 		$city = $_POST['city'];
 		$postcode = $_POST['postcode'];
 		$lat = 1; // à remplacer par la vraie latitude
 		$lng = 1; // à remplacer par la vraie longitude
-		$establishment = Establishment::createEstablishment($establishmentName, $id_type, $address0, $address2, $city, $postcode, $lat, $lng);
+		$establishment = Establishment::createEstablishment($establishmentName, $id_type, $address0, $address1, $city, $postcode, $lat, $lng);
 		$res = $establishment->addEstablishment();
+		
 		if (!is_null($res)) {
 			$this->setCreateEstablishmentFormView($res);
 			$this->setMessageView("Votre établissement a bien été créé");

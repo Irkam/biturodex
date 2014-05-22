@@ -70,8 +70,8 @@ function generateFirstInput($for, $label, $name, $placeHolder) { ?>
 <script type='text/javascript' src='jquery-2.1.0.js'></script>
 <script type='text/javascript' src='script_js/js.js'></script>
 <form method="post" action="index.php?action=CreateEvent" class="modal">
-	<input type="hidden" name="coordlat" value="0" />
-	<input type="hidden" name="coordlng" value="0" />
+	<input type="hidden" name="coordlat" id="coordlat" value="0" />
+	<input type="hidden" name="coordlng" id="coordlng" value="0" />
 	<div class="modal-header">
 		<h3 style="text-align:center">Création d'un événement</h3>
 	</div>

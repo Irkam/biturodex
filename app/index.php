@@ -31,7 +31,8 @@ function getAction() {
 			'CreateConversationForm',
 			'CreateConversation',
 			'GetMySurveys',
-			'Search',
+			'SearchEvents',
+			'SearchForm',
 			'Vote');
 
 	if (!in_array($action, $actions)) $action = 'Default';

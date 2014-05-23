@@ -31,7 +31,7 @@ function generateSearchUser() {
 			if(sizeof($events) > 0)
 				foreach($events as $event){
 					
-						echo("<tr><td> Nom soirée : " . $event->name .  "</td><td> Début de la soirée : " . $event->begins . "</td></tr><br>");
+						echo("<tr><td><a href=\"?action=ShowEvent&eid=". $event->id . "\">" . $event->name .  "</a></td><td> Début de la soirée : " . $event->begins . "</td></tr><br>");
 					
 				}
 			else {

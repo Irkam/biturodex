@@ -48,11 +48,11 @@ class Event{
 				
 				return $event;
 			}else{
-				return array(null);
+				return null;
 			}
 			
 		}catch(PDOException $e){
-			echo json_encode(array("error", $e->getMessage()));
+			throw $e;
 			return null;
 		}
 	}

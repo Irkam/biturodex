@@ -63,6 +63,38 @@ class User{
 	}
 	
 	/**
+	 * DEPRECATED ISHYGDDT
+	 */
+	public static function getUserByUsername($uid){
+		$db = new db();
+		$request = $db->prepare("SELECT user.uid, user.username, user.mailaddress, user.name, user.firstname 
+		FROM user WHERE username = ?");
+		
+		if ($request===false) return json_encode(array("error", "PDO error"));
+		
+		try{
+			$request->execute(array($uid));
+			
+			if($request->rowCount()==0)
+				return json_encode(array("error", "no such user"));
+			
+			$result = $request->fetch(PDO::FETCH_OBJ);
+			
+			$user = new User();
+			$user->uid = $result->uid;
+			$user->username = $result->username;
+			$user->email = $result->mailaddress;
+			$user->name = $result->name;
+			$user->firstname = $result->firstname;
+			
+			return $user;
+		
+		}catch(PDOException $e){
+			return json_encode(array("error", "PDO error"));
+		}
+	}
+	
+	/**
 	 * Renvoie un utilisateur en fonction de son UID. Ne peut être utilisé pour connecter un utilisateur
 	 * (ne renvoie pas de token de session)
 	 * 

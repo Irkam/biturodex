@@ -41,6 +41,11 @@ class SearchEventsAction extends Action {
 		
 		</table>
 		<?php
+		
+		if (!is_null($event)) {
+			$this->setSearchFormView($event);
+			$this->setMessageView("Votre établissement a bien été créé");
+		} else $this->setSearchFormView($res);	
 	}
 	
 	private function setSearchFormView($message) {

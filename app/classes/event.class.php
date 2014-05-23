@@ -304,7 +304,7 @@ class Event{
 			$stmt = $db->prepare($q);
 			
 			if(count($keyword) == 0){
-				return array(null);
+				return array();
 			}
 			
 			try{
@@ -334,17 +334,17 @@ class Event{
 					
 					return $events;
 				}else{
-					return array(null);
+					return array();
 				}
 			}catch(PDOException $e){
-				echo($e->getError());
-				return null;
+				throw $e;
+				return array();
 			}
 		}else{
 			$stmt = $db->prepare("SELECT * FROM `event` WHERE `name` LIKE ?");
 			
 			if(strlen($keyword) == 0)
-					return array(null);
+					return array();
 						
 			try{
 				$stmt->execute(array("%$keyword%"));
@@ -373,13 +373,53 @@ class Event{
 					
 					return $events;
 				}else{
-					return array(null);
+					return array();
 				}
 			}catch(PDOException $e){
 				echo($e->getError());
-				return null;
+				array();
 			}
 		}
+	}
+	
+	public static function getEventsSubscribedAndOwnedByUsername($uname){
+		$db = new db();
+		$query = $db->prepare("SELECT `event`.`id_event`, `event`.`name`, `event`.`owner_uid`, `event`.`id_establishment`, `event`.`latitude`, `event`.`longitude`, `event`.`radius`, `event`.`begins`, `event`.`ends`, `event`.`id_type`, `event`.`address` FROM `event`, `event_participation`, `user` 
+							WHERE `user`.`username` = :uname
+							AND `owner_uid`=`user`.`uid`
+							OR  (
+							`event_participation`.`id_event` = `event`.`id_event`
+							AND `event_participation`.`uid`=`user`.`uid`
+							AND `event_participation`.`yesnomaybe`>0)");
+		$query->bindParam(":uname", $uname);
+		
+		try{
+			$query->execute();		
+			$responses = $query->fetchAll(PDO::FETCH_ASSOC);
+			$events = array();
+				
+			foreach($responses as $res){
+				$event = new Event();
+				
+				$event->id = $res['id_event'];
+				$event->name = $res['name'];
+				$event->id_type = $res['id_type'];
+				$event->own_uid = $res['owner_uid'];
+				$event->id_establishment = $res['id_establishment'];
+				$event->latitude = $res['latitude'];
+				$event->longitude = $res['longitude'];
+				$event->radius = $res['radius'];
+				$event->address = $res['address'];
+				$event->begins = $res['begins'];
+				$event->ends = $res['ends'];
+				
+				array_push($events, $event);
+			}
+			return $events;
+		}catch(PDOException $e){
+			throw $e;
+		}
+		return array();
 	}
 	
 	public static function getTypes(){		

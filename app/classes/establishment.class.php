@@ -158,6 +158,45 @@ class Establishment{
 			return NULL;
 		}
 	}
+	
+	/**
+	 * retourne tous les establissements lie a l'utilisateur
+	 */
+	public static function getEstablishmentByUsername($username){
+		$db = new db();
+		$stmt = $db->prepare("SELECT es.id_establishment, es.id_type, es.name, es.address0, es.address1, es.city, es.postcode, es.latitude, es.longitude FROM establishment es, employees em, user u WHERE u.uid = em.uid AND em.id_establishment = es.id_establishment AND u.username =:username" );
+		$stmt->bindParam(":username", $username);
+		
+		try{
+			$stmt->execute();
+			
+			if($stmt->rowCount() > 0){
+				$responses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+				$establishments = array();
+				
+				foreach($responses as $res){
+					$establishment = new Establishment();
+					
+					$establishment->id = $res['id_establishment'];
+					$establishment->id_type = $res['id_type'];
+					$establishment->name = $res['name'];
+					$establishment->address0 = $res['address0'];
+					$establishment->address1 = $res['address1'];
+					$establishment->city = $res['city'];
+					$establishment->postcode = $res['postcode'];
+					$establishment->latitude = $res['latitude'];
+					$establishment->longitude = $res['longitude'];
+					
+					array_push($establishments, $establishment);
+				}return $establishments;
+			}else
+				return array(null);
+			
+		}catch(PDOException $e){
+			throw $e;
+			return null;
+		}
+	}
 
 	public static function getEstablishmentsByLatLngDistType($lat, $lng, $dist, $type, $queryrange=30){
 		$db = new db();

@@ -4,10 +4,7 @@
 	$events = Event::getEventsByName($keywords);
 	?>
 	<div class="control-group">
-		
-		
-			
-	
+
 			<?php
 			foreach($events as $event){
 				
@@ -29,15 +26,16 @@ function generateSearchUser() {
 	$events = Event::getEventsByName($keywords);
 	?>
 	<div class="control-group">
-		
-		
-			
-	
+
 			<?php
-			foreach($events as $event){
-				
-					echo("<tr><td> Nom soirée : " . $event->name .  "</td><td> Début de la soirée : " . $event->begins . "</td></tr><br>");
-				
+			if(sizeof($events) > 0)
+				foreach($events as $event){
+					
+						echo("<tr><td> Nom soirée : " . $event->name .  "</td><td> Début de la soirée : " . $event->begins . "</td></tr><br>");
+					
+				}
+			else {
+				echo("<tr><td>Aucune correspondance trouvée pour la recherche.</td></tr>");
 			}
 			?>
 		
@@ -58,10 +56,7 @@ function generateSearchUser() {
 		?>
 		
 		<?php
-		$tab = $_SESSION;
-			foreach($tab as $ligne){
-				echo $ligne;
-			}
+		
 			
 		if($_SESSION['login'] == null){
 			generateSearchNormal();

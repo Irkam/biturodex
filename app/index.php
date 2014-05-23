@@ -26,13 +26,16 @@ function getAction() {
 			'UpdateUser',
 			'CreateEstablishmentForm',
 			'CreateEstablishment',
+			'GetMyEstablishment',
 			'CreateEventForm',
 			'CreateEvent',
+			'GetMyEvents',
 			'CreateConversationForm',
 			'CreateConversation',
 			'GetMySurveys',
 			'SearchEvents',
 			'SearchForm',
+			'ShowEvent',
 			'Vote');
 
 	if (!in_array($action, $actions)) $action = 'Default';

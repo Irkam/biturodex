@@ -24,7 +24,7 @@ class SearchEventsAction extends Action {
 		
 		$events = Event::getEventsByName($keywords);
 		//$res = $events->getEventsByName($keywords);
-		//$_SESSION = $res;
+		
 		
 		//if (!is_null($res)) {
 		//	$this->setCreateEstablishmentFormView($res);
@@ -34,18 +34,17 @@ class SearchEventsAction extends Action {
 		<table>
 			
 		<?php
-		foreach($events as $event){
-			echo("<tr><td>" . $event->name . "</td><td>" . $event->begins . "</td></tr>");
-		}
+		
+		
 		?>
 		
 		</table>
 		<?php
 		
-		if (!is_null($event)) {
-			$this->setSearchFormView($event);
-			$this->setMessageView("Votre établissement a bien été créé");
-		} else $this->setSearchFormView($res);	
+		if (is_null($events)) {
+			$this->setSearchFormView($events);
+			$this->setMessageView("Votre recherche donne");
+		} else $this->setSearchFormView($events);	
 	}
 	
 	private function setSearchFormView($message) {

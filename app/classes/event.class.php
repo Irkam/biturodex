@@ -1,5 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . "/db.class.php");
+require_once(dirname(__FILE__) . "/eventwallpost.class.php");
 
 /**
  * 
@@ -14,6 +15,9 @@ class Event{
 	
 	const ORDER_SOONEST = 0;
 	const ORDER_NEAREST = 1;
+	const PARTICIPATION_NO = 0;
+	const PARTICIPATION_YES = 1;
+	const PARTICIPATION_MAYBE = 2;
 	
 	/**
 	 * Fetches an event by its id
@@ -502,6 +506,37 @@ class Event{
 			return true;
 		}
 		else return false; /* contre les injections, owner_uid et id_suppresser ne correspondent pas. */
+	}
+	
+	public function getWallPosts(){
+		$db = new db();
+		
+		$stmt = $db->prepare("SELECT `id_wall_post`, `op_uid`, `message` 
+		FROM `event_wall` 
+		WHERE `id_event`=:event
+		ORDER BY `id_wall_post` DESC");
+		$stmt->bindParam(":event", $this->id);
+		
+		try{
+			$stmt->execute();
+			$responses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+			$wallposts = array();
+			
+			foreach($responses as $res){
+				$post = new EventWallPost();
+				$post->id = $res['id_wall_post'];
+				$post->poster = $res['op_uid'];
+				$post->content = $res['message'];
+				
+				array_push($wallposts, $post);
+			}
+			
+			return $wallposts;
+		}catch(PDOException $e){
+			throw $e;
+		}
+		
+		return array(null);
 	}
 	
 	public function getId(){return $this->id;}

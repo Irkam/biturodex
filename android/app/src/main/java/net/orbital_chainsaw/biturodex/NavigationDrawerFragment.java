@@ -4,6 +4,7 @@ package net.orbital_chainsaw.biturodex;
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -102,9 +103,9 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
                 new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
+                        getString(R.string.title_menu_realtime),
+                        getString(R.string.title_menu_list),
+                        getString(R.string.title_menu_settings),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
@@ -247,8 +248,8 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.action_filter) {
+            showSearchFilterDialogFragment();
             return true;
         }
 
@@ -278,5 +279,11 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+
+    protected void showSearchFilterDialogFragment(){
+        FragmentManager fm = getFragmentManager();
+        SearchFilterDialogFragment searchFilterDialogFragment = new SearchFilterDialogFragment();
+        searchFilterDialogFragment.show(fm, "Filtres");
     }
 }

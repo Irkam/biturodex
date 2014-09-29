@@ -2,12 +2,12 @@
 <resources>
 
     <string name="app_name">Biturodex</string>
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
-    <string name="action_settings">Settings</string>
+    <string name="title_menu_realtime">En temps réel</string>
+    <string name="title_menu_list">Liste</string>
+    <string name="title_menu_settings">Paramètres</string>
+    <string name="navigation_drawer_open">Ouvrir le menu</string>
+    <string name="navigation_drawer_close">Fermer le menu</string>
+    <string name="action_filter">Filtres</string>
+    <string name="action_settings">Paramètres</string>
 
 </resources>

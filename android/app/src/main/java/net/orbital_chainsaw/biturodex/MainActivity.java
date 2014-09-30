@@ -11,9 +11,9 @@ import android.support.v4.widget.DrawerLayout;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-    private final int DRAWER_REALTIME = 1;
-    private final int DRAWER_LIST = 2;
-    private final int DRAWER_SETTINGS = 3;
+    private final int DRAWER_SEARCH_MAP = 0;
+    private final int DRAWER_SEARCH_LIST = 1;
+    private final int DRAWER_SETTINGS = 2;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -38,18 +38,22 @@ public class MainActivity extends Activity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new SearchMapFragment())
+                .commit();
     }
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
         FragmentManager fragmentManager = getFragmentManager();
         switch(position){
-            case DRAWER_REALTIME:
+            case DRAWER_SEARCH_MAP:
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, new BiturodexMapFragment())
+                        .replace(R.id.container, new SearchMapFragment())
                         .commit();
                 break;
-            case DRAWER_LIST:
+            case DRAWER_SEARCH_LIST:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new EventsListFragment())
                         .commit();

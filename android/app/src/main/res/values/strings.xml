@@ -9,5 +9,6 @@
     <string name="navigation_drawer_close">Fermer le menu</string>
     <string name="action_filter">Filtres</string>
     <string name="action_settings">Paramètres</string>
+    <string name="search_gmap_launch">Lancer la recherche</string>
 
 </resources>

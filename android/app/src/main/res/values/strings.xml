@@ -4,7 +4,10 @@
     <string name="app_name">Biturodex</string>
     <string name="title_menu_realtime">En temps réel</string>
     <string name="title_menu_list">Liste</string>
+    <string name="title_menu_my_events">Mes événements</string>
+    <string name="title_menu_my_establishments">Mes établissements</string>
     <string name="title_menu_settings">Paramètres</string>
+    <string name="title_menu_about">A propos</string>
     <string name="navigation_drawer_open">Ouvrir le menu</string>
     <string name="navigation_drawer_close">Fermer le menu</string>
     <string name="action_filter">Filtres</string>

@@ -19,6 +19,7 @@ public class SearchFilterDialogFragment extends DialogFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstState){
+        getDialog().setTitle("Filtres de recherche");
         return inflater.inflate(R.layout.fragment_search_filter_dialog, container);
     }
 }

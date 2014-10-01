@@ -13,7 +13,10 @@ public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private final int DRAWER_SEARCH_MAP = 0;
     private final int DRAWER_SEARCH_LIST = 1;
-    private final int DRAWER_SETTINGS = 2;
+    private final int DRAWER_MY_EVENTS = 2;
+    private final int DRAWER_MY_ESTABLISHMENTS = 3;
+    private final int DRAWER_SETTINGS = 4;
+    private final int DRAWER_ABOUT = 5;
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -58,9 +61,24 @@ public class MainActivity extends Activity
                         .replace(R.id.container, new EventsListFragment())
                         .commit();
                 break;
+            case DRAWER_MY_EVENTS:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new MyEventsFragment())
+                        .commit();
+                break;
+            case DRAWER_MY_ESTABLISHMENTS:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new MyEstablishmentsFragment())
+                        .commit();
+                break;
             case DRAWER_SETTINGS:
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, new EventsListFragment())
+                        .commit();
+                break;
+            case DRAWER_ABOUT:
+                fragmentManager.beginTransaction()
+                        .replace(R.id.container, new AboutFragment())
                         .commit();
                 break;
         }
@@ -75,7 +93,16 @@ public class MainActivity extends Activity
                 mTitle = getString(R.string.title_menu_list);
                 break;
             case 3:
+                mTitle = getString(R.string.title_menu_my_events);
+                break;
+            case 4:
+                mTitle = getString(R.string.title_menu_my_establishments);
+                break;
+            case 5:
                 mTitle = getString(R.string.title_menu_settings);
+                break;
+            case 6:
+                mTitle = getString(R.string.title_menu_about);
                 break;
         }
     }

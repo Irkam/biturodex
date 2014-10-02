@@ -1,61 +1,43 @@
-class TypeEvenement :
-	'''(NULL)'''
-	def __init__(self) :
-		self.nom = None # 
-		pass
-	def listertypes (self) :
-		# returns 
-		pass
-class Utilisateur :
-	def __init__(self) :
-		self.username = None # 
-		self.nom = None # 
-		self.prenom = None # 
-		self.email = None # 
-		self.passwd = None # 
-		pass
-	def cree_evenement (self) :
-		# returns 
-		pass
-class Etablissement :
-	'''(NULL)'''
-	def __init__(self) :
-		self.nom = None # 
-		self.adresse0 = None # 
-		self.adresse1 = None # 
-		self.pays = None # 
-		self.ville = None # 
-		self.codepostal = None # 
-		self.type = None # 
-		self.horaires = None # 
-		self.latitude = None # 
-		self.longitude = None # 
-		pass
-	def obtenir_itineraire (self) :
-		# returns itineraire
-		pass
-class Evenement :
-	'''(NULL)'''
-	def __init__(self) :
-		self.type = None # 
-		self.latitude = None # 
-		self.rayon = None # 
-		self.longitude = None # 
-		self.horaires = None # 
-		self.recurrences = None # 
-		self.createur = None # Utilisateur
-		self.etablissement = None # Etablissement
-		pass
-class Emploie :
-	def __init__(self) :
-		self.rôle = None # 
-		self.horaires = None # 
-		pass
-class TypeEtablissement :
-	'''(NULL)'''
-	def __init__(self) :
-		self.nom = None # 
-		pass
-	def listertypes (self) :
-		# returns 
-		pass
+from django.db import models
+from django.contrib.auth.models import User
+from geoposition.fields import GeopositionField
+
+class User(models.Model):
+	user = models.OneToOneField(User)
+	
+	def get_workplaces(self):
+		return Event.objects.all().filter(employees__in=[self.id])
+	
+class Country(models.Model):
+	name = models.CharField(max_length=32)
+
+class EventType(models.Model):
+	name = models.CharField(max_length=32)
+
+class EstablishmentType(models.Model):
+	name = models.CharField(max_length=32)
+
+class Establishment(models.Model):
+	name = models.CharField(max_length=32)
+	address0 = models.CharField(max_length=32, blank=True)
+	address1 = models.CharField(max_length=32, blank=True)
+	postcode = models.CharField(max_length=5, blank=True)
+	city = models.CharField(max_length=32, blank=True)
+	country = models.ForeignKey(Country, blank=True, null=True)
+	type = models.ForeignKey(EventType)
+	position = GeopositionField(blank=True, null=True)
+	#TODO : horaires
+	employees = models.ManyToManyField(User, blank=True, null=True)
+
+class Event(models.Model):
+	name = models.CharField(max_length=32)
+	establishment = models.ForeignKey(Establishment, blank=True, null=True)
+	address0 = models.CharField(max_length=32, blank=True)
+	address1 = models.CharField(max_length=32, blank=True)
+	postcode = models.CharField(max_length=5, blank=True)
+	city = models.CharField(max_length=32, blank=True)
+	country = models.ForeignKey(Country, blank=True, null=True)
+	type = models.ForeignKey(EstablishmentType)
+	position = GeopositionField(blank=True, null=True)
+	#TODO: horaires
+	employees = models.ManyToManyField(User, blank=True, null=True)
